@@ -1,1 +1,45 @@
+# gitignore - Leonard Tatum (07.27.15)
+###########################
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# general folders
+bin/
+gen/
+
+# Gradle files
+.gradle/
 /build
+build/
+/*/build/
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+**/.DS_Store
+
+# Android Studio
+*zTrip.iml
+.idea/
+*.iml
+
+# Properties
+.apt_generated/
+project.properties
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+**.log

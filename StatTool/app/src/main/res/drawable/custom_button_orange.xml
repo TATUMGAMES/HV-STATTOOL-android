@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" >
+        <shape>
+            <gradient
+                android:startColor="@color/material_amber_a200_color_code"
+                android:endColor="@color/material_amber_a200_color_code" />
+        </shape>
+    </item>
+
+    <item android:state_focused="true" >
+        <shape>
+            <gradient
+                android:startColor="@color/material_amber_a200_color_code"
+                android:endColor="@color/material_amber_a200_color_code" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/material_amber_500_color_code"
+                android:endColor="@color/material_amber_500_color_code" />
+        </shape>
+    </item>
+</selector>

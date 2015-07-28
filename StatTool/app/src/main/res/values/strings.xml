@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Stat Tool</string>
+
+    <!-- labels -->
+    <string name="choose_affinity">Choose Affinity [Required]</string>
+    <string name="choose_card_type">Choose Card Type [Required]</string>
+    <string name="spinner_default_txt">Select</string>
+    <string name="regenerate">Regenerate</string>
+    <string name="reset">Reset To Base Stats?</string>
+    <string name="num">/#</string>
+    <string name="lv">Lv:</string>
+    <string name="asc">Asc:</string>
+    <string name="hp">HP:</string>
+    <string name="str">Str:</string>
+    <string name="spd">Spd:</string>
+    <string name="wis">Wis:</string>
+    <string name="phy_def">Phy Def:</string>
+    <string name="mag_def">Mag Def:</string>
+    <string name="crit">Crit %:</string>
+    <string name="tooltip_default">Start by selecting an Affinity and Card Type to
+        generate stats!</string>
+    <string name="tooltip_change_lv_and_asc">Change the Lv (level) and Asc (ascension) values to
+        see updates to stats</string>
+    <string name="tooltip_reset_stats">Reset stats by setting the level to 0</string>
+    <string name="tooltip_stats_increase">Stats increase by 5% per Lv (level)</string>
+    <string name="tooltip_asc_increase">Increasing Asc (ascension) will increase your man Lv
+        (level) by 2</string>
+    <string name="tooltip_physical_defense">Guardians with affinity Robotic, Physical or Beast do
+        physical damage that is greatly negated by Physical Defense</string>
+    <string name="tooltip_magical_defense">Guardians with affinity Elemental, Psychic or Brainiac do
+        magical damage that is greatly negated by Magical Defense</string>
+    <string name="tooltip_strength_attack">Guardians with affinity Robotic, Physical or Beast rely on
+        Str (strength) to deal damage to opponents</string>
+    <string name="tooltip_wisdom_attack">Guardians with affinity Elemental, Psychic or Brainiac rely on
+        Wis (wisdom) to deal damage to opponents</string>
+    <string name="tooltip_critical_attack">Successful crit (critical) attacks will add an additional
+        20% bonus damage to overall damage dealt</string>
+
+    <!-- settings -->
+    <string name="action_settings">Settings</string>
+</resources>

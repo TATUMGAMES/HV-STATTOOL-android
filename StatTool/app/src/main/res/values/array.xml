@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="arryCardType">
+        <!-- card types -->
+        <item>SELECT OPTION</item>
+        <item>COMMON</item>
+        <item>RARE</item>
+        <item>EPIC</item>
+        <item>LEGENDARY</item>
+        <item>MYTHIC</item>
+        <item>SQUAD LEADER</item>
+    </array>
+    <array name="arryAffinity">
+        <!-- affinity types -->
+        <item>SELECT OPTION</item>
+        <item>ROBOTIC</item>
+        <item>PHYSICAL</item>
+        <item>BEAST</item>
+        <item>ELEMENTAL</item>
+        <item>PSYCHIC</item>
+        <item>BRAINIAC</item>
+    </array>
+</resources>    

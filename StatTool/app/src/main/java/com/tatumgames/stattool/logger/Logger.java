@@ -18,7 +18,7 @@ package com.tatumgames.stattool.logger;
 
 import android.util.Log;
 
-import com.tatumgames.stattool.Constants.Constants;
+import com.tatumgames.stattool.constants.Constants;
 
 /**
  * Created by Tatum on 7/24/2015.

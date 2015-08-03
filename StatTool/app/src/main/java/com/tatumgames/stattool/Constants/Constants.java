@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tatumgames.stattool.Constants;
+package com.tatumgames.stattool.constants;
 
 /**
  * Constants class

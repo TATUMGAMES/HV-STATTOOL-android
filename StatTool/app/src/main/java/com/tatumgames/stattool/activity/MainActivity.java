@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private Button btnRegenerate;
 
     private boolean isDefaultSet, isPaused, isEditable, isBaseStatsSet, isAnimationStarted;
-    private String mSelectedAffinity, mSelectedType, mPrevSelectedAffinity, mPrevSelectedType;
+    private String mSelectedAffinity, mSelectedType;
     private String[] arryAffinity, arryType;
     private Random r;
     private Timer mTimer;
@@ -960,7 +960,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 break;
             case R.id.spn_type:
                 // start animation to prompt user that stats will not regenerate automatically
-                if (!isStringEmpty(mSelectedType) && !mSelectedType.equals(mPrevSelectedType)) {
+                if (!isStringEmpty(mSelectedType)) {
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);

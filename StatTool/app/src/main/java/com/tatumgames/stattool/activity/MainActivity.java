@@ -48,10 +48,13 @@ import com.tatumgames.stattool.helper.InputFilterMinMax;
 import com.tatumgames.stattool.listener.ShakeEventListener;
 import com.tatumgames.stattool.logger.Logger;
 import com.tatumgames.stattool.model.Stats;
+import com.tatumgames.stattool.utils.Utils;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.tatumgames.stattool.utils.Utils.isStringEmpty;
 
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -74,7 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private Timer mTimer;
 
     private static final int VIBRATE_TIMER = 500; // milliseconds
-    private static final int TIMER = 100000; // milliseconds
+    private static final int TIMER = 60000; // milliseconds
     private static final int CLICK_THRESHOLD = 500; // milliseconds
     private static final int MAX_LEVEL_FILTER_VALUE = 20;
     private static final double MULTIPLIER_LEVEL_STATS = 0.05; // percent
@@ -85,8 +88,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private static final double MULTIPLIER_TIER_E = 0.3; // arbitrary value
     private static final double MULTIPLIER_TIER_F = 0.15; // arbitrary value
     private static final String SELECT_OPTION = "SELECT OPTION";
-    private static final String EMPTY = "";
-    private static final String NULL = "null";
     private Animation animation;
 
     private int mMaxLv;
@@ -179,7 +180,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         edtAsc.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (isStringEmpty(String.valueOf(edtAsc.getText()))) {
+                if (Utils.isStringEmpty(String.valueOf(edtAsc.getText()))) {
                     edtAsc.setText("0");
                     tvMaxLv.setText("/ " + String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText())))));
 
@@ -209,7 +210,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             @Override
             public void afterTextChanged(Editable s) {
                 // update max level based on inputted asc
-                if (!isStringEmpty(String.valueOf(edtAsc.getText())) && isBaseStatsSet &&
+                if (!Utils.isStringEmpty(String.valueOf(edtAsc.getText())) && isBaseStatsSet &&
                         Integer.parseInt(String.valueOf(edtAsc.getText())) > 0) {
                     tvMaxLv.setText("/ " + String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText())))));
 
@@ -226,7 +227,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         edtLv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (isStringEmpty(String.valueOf(edtLv.getText()))) {
+                if (Utils.isStringEmpty(String.valueOf(edtLv.getText()))) {
                     edtLv.setText("1");
                     resetToBaseStats();
                 }
@@ -249,7 +250,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             @Override
             public void afterTextChanged(Editable s) {
                 // update stats based on changed level
-                if (!isStringEmpty(String.valueOf(edtLv.getText())) && isBaseStatsSet &&
+                if (!Utils.isStringEmpty(String.valueOf(edtLv.getText())) && isBaseStatsSet &&
                         Integer.parseInt(String.valueOf(edtLv.getText())) > 1) {
                     setStats();
                 }
@@ -264,7 +265,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * Method is used to show a randomized tooltip
      */
     private void showRandomTooltip() {
-        if (isStringEmpty(mSelectedAffinity) || isStringEmpty(mSelectedType) ||
+        if (Utils.isStringEmpty(mSelectedAffinity) || Utils.isStringEmpty(mSelectedType) ||
                 mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) ||
                 mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
             if (isDefaultSet) {
@@ -345,7 +346,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) hp base: [425-500]
     // (L) hp base: [500-600]
     // (M) hp base: [600-750]
-    // (SL) hp base: [550-675]
+    // (SL) hp base: [400-475]
     private int randHpStatHigh(CardType cardType, Affinity affinity) {
         int hp = 0;
 
@@ -360,7 +361,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             hp = r.nextInt(151) + 600;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            hp = r.nextInt(126) + 550;
+            hp = r.nextInt(76) + 400;
         }
 
         int baseHp = hp + randHpByAffinity(affinity, hp);
@@ -400,7 +401,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) str base: [42-50]
     // (L) str base: [50-60]
     // (M) str base: [60-75]
-    // (SL) str base: [55-67]
+    // (SL) str base: [40-48]
     private int randStrStat(CardType cardType, Affinity affinity) {
         int str = 0;
 
@@ -415,7 +416,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             str = r.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            str = r.nextInt(13) + 55;
+            str = r.nextInt(9) + 40;
         }
 
         int baseStr = str + randStrByAffinity(affinity, str);
@@ -455,7 +456,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) spd base: [42-50]
     // (L) spd base: [50-60]
     // (M) spd base: [60-75]
-    // (SL) spd base: [55-67]
+    // (SL) spd base: [40-48]
     private int randSpdStat(CardType cardType, Affinity affinity) {
         int spd = 0;
 
@@ -470,7 +471,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             spd = r.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            spd = r.nextInt(13) + 55;
+            spd = r.nextInt(9) + 40;
         }
 
         int baseSpd = spd + randSpdByAffinity(affinity, spd);
@@ -510,7 +511,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) wis base: [42-50]
     // (L) wis base: [50-60]
     // (M) wis base: [60-75]
-    // (SL) wis base: [55-67]
+    // (SL) wis base: [40-48]
     private int randWisStat(CardType cardType, Affinity affinity) {
         int wis = 0;
 
@@ -525,7 +526,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             wis = r.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            wis = r.nextInt(13) + 55;
+            wis = r.nextInt(9) + 40;
         }
 
         int baseWis = wis + randWisByAffinity(affinity, wis);
@@ -565,7 +566,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) phyDef base: [42-50]
     // (L) phyDef base: [50-60]
     // (M) phyDef base: [60-75]
-    // (SL) phyDef base: [55-67]
+    // (SL) phyDef base: [40-48]
     private int randPhyDefStat(CardType cardType, Affinity affinity) {
         int phyDef = 0;
 
@@ -580,7 +581,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             phyDef = r.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            phyDef = r.nextInt(13) + 55;
+            phyDef = r.nextInt(9) + 40;
         }
 
         int basePhyDef = phyDef + randPhyDefByAffinity(affinity, phyDef);
@@ -620,7 +621,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) magDef base: [42-50]
     // (L) magDef base: [50-60]
     // (M) magDef base: [60-75]
-    // (SL) magDef base: [55-67]
+    // (SL) magDef base: [40-48]
     private int randMagDefStat(CardType cardType, Affinity affinity) {
         int magDef = 0;
 
@@ -635,7 +636,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else if (cardType.equals(CardType.MYTHIC)) {
             magDef = r.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            magDef = r.nextInt(13) + 55;
+            magDef = r.nextInt(9) + 40;
         }
 
         int baseMagDef = magDef + randMagDefByAffinity(affinity, magDef);
@@ -675,7 +676,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     // (E) critPerc base: [6]
     // (L) critPerc base: [8]
     // (M) critPerc base: [10]
-    // (SL) critPerc base: [9]
+    // (SL) critPerc base: [5]
     // crit percentage is not affinity linked
     private int randCritPercStat(CardType cardType) {
         if (cardType.equals(CardType.COMMON)) {
@@ -695,8 +696,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             return 10;
         }
         // SQUAD_LEADER return value
-        stats.setCrit(9);
-        return 9;
+        stats.setCrit(5);
+        return 5;
     }
 
     /**
@@ -736,6 +737,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * @return
      */
     private int getMaxAsc(CardType cardType) {
+        // SQUAD_LEADER max ascension
         int maxAsc = 0;
 
         if (cardType.equals(CardType.COMMON) ||
@@ -848,7 +850,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * before edits and adjustments were made
      */
     private void resetToBaseStats() {
-        if (!isStringEmpty(mSelectedAffinity) && !isStringEmpty(mSelectedType) &&
+        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedType) &&
                 !mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) &&
                 !mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
             edtLv.setText("1");
@@ -885,16 +887,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 isAnimationStarted = false;
             }
         }
-    }
-
-    /**
-     * Method checks if String value is empty
-     *
-     * @param str
-     * @return
-     */
-    private static boolean isStringEmpty(String str) {
-        return str == null || str.length() == 0 || EMPTY.equals(str.trim()) || NULL.equals(str);
     }
 
     @Override
@@ -940,7 +932,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         switch (parent.getId()) {
             case R.id.spn_affinity:
                 // start animation to prompt user that stats will not regenerate automatically
-                if (!isStringEmpty(mSelectedAffinity) && !mSelectedAffinity.equals(arryAffinity[position])) {
+                if (!Utils.isStringEmpty(mSelectedAffinity) && !mSelectedAffinity.equals(arryAffinity[position])) {
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);
@@ -960,7 +952,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 break;
             case R.id.spn_type:
                 // start animation to prompt user that stats will not regenerate automatically
-                if (!isStringEmpty(mSelectedType)) {
+                if (!Utils.isStringEmpty(mSelectedType)) {
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);
@@ -992,7 +984,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * Method is used to set stats
      */
     private void setStats() {
-        if (!isStringEmpty(mSelectedAffinity) && !isStringEmpty(mSelectedType) &&
+        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedType) &&
                 !mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) &&
                 !mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
 
@@ -1004,12 +996,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 edtAsc.setFocusable(true);
                 edtAsc.setFocusableInTouchMode(true);
 
-                if (isStringEmpty(edtLv.getText().toString())) {
+                if (Utils.isStringEmpty(edtLv.getText().toString())) {
                     // set default values
                     edtLv.setText("1");
                 }
 
-                if (isStringEmpty(edtAsc.getText().toString())) {
+                if (Utils.isStringEmpty(edtAsc.getText().toString())) {
                     // set default values
                     edtAsc.setText("0");
                 }
@@ -1037,7 +1029,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 if (!isAnimationStarted) {
                     Logger.d(TAG, "updating base stats");
                     // base stats are set, only update stats
-                    if (!isStringEmpty(String.valueOf(edtLv.getText())) &&
+                    if (!Utils.isStringEmpty(String.valueOf(edtLv.getText())) &&
                             Integer.parseInt(String.valueOf(edtLv.getText())) > 1) {
                         // level directly influences the increase in stats
                         int level = Integer.parseInt(String.valueOf(edtLv.getText()));

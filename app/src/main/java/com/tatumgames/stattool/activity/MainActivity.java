@@ -1,12 +1,12 @@
 /**
  * Copyright 2013-present Tatum Games, LLC.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,8 +54,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.tatumgames.stattool.utils.Utils.isStringEmpty;
-
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -81,12 +79,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private static final int CLICK_THRESHOLD = 500; // milliseconds
     private static final int MAX_LEVEL_FILTER_VALUE = 20;
     private static final double MULTIPLIER_LEVEL_STATS = 0.05; // percent
-    private static final double MULTIPLIER_TIER_A = 0.6; // arbitrary value
-    private static final double MULTIPLIER_TIER_B = 0.55; // arbitrary value
-    private static final double MULTIPLIER_TIER_C = 0.5; // arbitrary value
-    private static final double MULTIPLIER_TIER_D = 0.4; // arbitrary value
-    private static final double MULTIPLIER_TIER_E = 0.3; // arbitrary value
-    private static final double MULTIPLIER_TIER_F = 0.15; // arbitrary value
+    private static final double[] MULTIPLIER_TIER = {1, 0.9, 0.75, 0.55, 0.4, 0.25}; // arbitrary value
     private static final String SELECT_OPTION = "SELECT OPTION";
     private Animation animation;
 
@@ -115,7 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mSensorListener = new ShakeEventListener();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        animation = new AlphaAnimation(1.0F, 0.6F);
+        animation = new AlphaAnimation(1.0F, 0.4F);
         edtLv = (EditText) findViewById(R.id.edt_lv);
         edtAsc = (EditText) findViewById(R.id.edt_asc);
         tvHp = (TextView) findViewById(R.id.tv_hp);
@@ -130,7 +123,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         tvMaxAsc = (TextView) findViewById(R.id.tv_max_asc);
         tvResetToBase = (TextView) findViewById(R.id.tv_reset_to_base);
         spnAffinity = (Spinner) findViewById(R.id.spn_affinity);
-        spnType = (Spinner) findViewById(R.id.spn_type);
+        spnType = (Spinner) findViewById(R.id.spn_card_type);
         arryAffinity = getResources().getStringArray(R.array.arryAffinity);
         arryType = getResources().getStringArray(R.array.arryCardType);
         btnRegenerate = (Button) findViewById(R.id.btn_regenerate);
@@ -250,9 +243,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             @Override
             public void afterTextChanged(Editable s) {
                 // update stats based on changed level
-                if (!Utils.isStringEmpty(String.valueOf(edtLv.getText())) && isBaseStatsSet &&
-                        Integer.parseInt(String.valueOf(edtLv.getText())) > 1) {
-                    setStats();
+                if (!Utils.isStringEmpty(String.valueOf(edtLv.getText())) && isBaseStatsSet) {
+                    if (Integer.parseInt(String.valueOf(edtLv.getText())) > 1) {
+                        setStats();
+                    } else if (Integer.parseInt(String.valueOf(edtLv.getText())) == 0) {
+                        reset();
+                    }
                 }
             }
         });
@@ -277,26 +273,28 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             tvTooltip.setText(getResources().getString(R.string.tooltip_default));
             startTooltipTimer();
         } else {
-            // set random tooltip message
-            int rand = r.nextInt(9);
-            if (rand == 0) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_change_lv_and_asc));
-            } else if (rand == 1) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_reset_stats));
-            } else if (rand == 2) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_stats_increase));
-            } else if (rand == 3) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_asc_increase));
-            } else if (rand == 4) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_physical_defense));
-            } else if (rand == 5) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_magical_defense));
-            } else if (rand == 6) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_strength_attack));
-            } else if (rand == 7) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_wisdom_attack));
-            } else if (rand == 8) {
-                tvTooltip.setText(getResources().getString(R.string.tooltip_critical_attack));
+            if (!isAnimationStarted) {
+                // set random tooltip message
+                int rand = r.nextInt(9);
+                if (rand == 0) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_change_lv_and_asc));
+                } else if (rand == 1) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_reset_stats));
+                } else if (rand == 2) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_stats_increase));
+                } else if (rand == 3) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_asc_increase));
+                } else if (rand == 4) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_physical_defense));
+                } else if (rand == 5) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_magical_defense));
+                } else if (rand == 6) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_strength_attack));
+                } else if (rand == 7) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_wisdom_attack));
+                } else if (rand == 8) {
+                    tvTooltip.setText(getResources().getString(R.string.tooltip_critical_attack));
+                }
             }
         }
     }
@@ -342,26 +340,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     }
 
     // (C) hp base: [350-400]
-    // (R) hp base: [375-450]
-    // (E) hp base: [425-500]
-    // (L) hp base: [500-600]
-    // (M) hp base: [600-750]
-    // (SL) hp base: [400-475]
+    // (R) hp base: [400-475]
+    // (E) hp base: [475-550]
+    // (L) hp base: [575-675]
+    // (M) hp base: [700-850]
+    // (SL) hp base: [437-512]
     private int randHpStatHigh(CardType cardType, Affinity affinity) {
         int hp = 0;
 
         if (cardType.equals(CardType.COMMON)) {
             hp = r.nextInt(51) + 350;
         } else if (cardType.equals(CardType.RARE)) {
-            hp = r.nextInt(76) + 375;
-        } else if (cardType.equals(CardType.EPIC)) {
-            hp = r.nextInt(76) + 425;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            hp = r.nextInt(101) + 500;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            hp = r.nextInt(151) + 600;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
             hp = r.nextInt(76) + 400;
+        } else if (cardType.equals(CardType.EPIC)) {
+            hp = r.nextInt(76) + 475;
+        } else if (cardType.equals(CardType.LEGENDARY)) {
+            hp = r.nextInt(101) + 575;
+        } else if (cardType.equals(CardType.MYTHIC)) {
+            hp = r.nextInt(151) + 700;
+        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
+            hp = r.nextInt(76) + 437;
         }
 
         int baseHp = hp + randHpByAffinity(affinity, hp);
@@ -369,7 +367,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseHp;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -380,17 +378,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int hpByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_C);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[2]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_A);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[0]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_D);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[3]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_B);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[1]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_E);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[4]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER_F);
+            hpByAffinity = (int) (hp * MULTIPLIER_TIER[5]);
         }
 
         return hpByAffinity;
@@ -424,7 +422,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseStr;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -435,17 +433,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int strByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_A);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[0]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_B);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[1]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_C);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[2]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_D);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[3]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_F);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[5]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER_E);
+            strByAffinity = (int) (str * MULTIPLIER_TIER[4]);
         }
 
         return strByAffinity;
@@ -479,7 +477,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseSpd;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -490,17 +488,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int spdByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_F);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[5]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_E);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[4]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_A);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[0]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_E);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[4]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_B);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[1]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER_D);
+            spdByAffinity = (int) (spd * MULTIPLIER_TIER[3]);
         }
 
         return spdByAffinity;
@@ -534,7 +532,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseWis;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -545,17 +543,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int wisByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_E);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[4]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_F);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[5]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_F);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[5]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_A);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_A);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER_A);
+            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
         }
 
         return wisByAffinity;
@@ -589,7 +587,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return basePhyDef;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -600,17 +598,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int phyDefByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_D);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[3]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_C);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_E);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[4]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_C);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_C);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER_B);
+            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[1]);
         }
 
         return phyDefByAffinity;
@@ -644,7 +642,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseMagDef;
     }
 
-    // multiplier: 0.6, 0.55, 0.5, 0.4, 0.3, 0.15
+    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
     // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
     // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
     // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
@@ -655,17 +653,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         int magDefByAffinity = 0;
 
         if (affinity.equals(Affinity.ROBOTIC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_B);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[1]);
         } else if (affinity.equals(Affinity.PHYSICAL)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_D);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[3]);
         } else if (affinity.equals(Affinity.BEAST)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_B);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[1]);
         } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_F);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[5]);
         } else if (affinity.equals(Affinity.PSYCHIC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_D);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[3]);
         } else if (affinity.equals(Affinity.BRAINIAC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER_C);
+            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[2]);
         }
 
         return magDefByAffinity;
@@ -826,10 +824,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         spnAffinity.setSelection(0);
         spnType.setSelection(0);
 
-        edtLv.setText("1");
-        edtAsc.setText("0");
+        // reset editText values
+        edtLv.setText(getResources().getString(R.string.num_num));
+        edtAsc.setText(getResources().getString(R.string.num));
         tvMaxLv.setText(getResources().getString(R.string.num));
         tvMaxAsc.setText(getResources().getString(R.string.num));
+        // reset editText color
+        edtLv.setTextColor(Utils.getColor(mContext, R.color.material_grey_400_color_code));
+        edtAsc.setTextColor(Utils.getColor(mContext, R.color.material_grey_400_color_code));
+
+        // reset textView values
         tvHp.setText("0");
         tvStr.setText("0");
         tvSpd.setText("0");
@@ -916,6 +920,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 if (isAnimationStarted) {
                     btnRegenerate.clearAnimation();
                     isAnimationStarted = false;
+                    // show randon tooltip
+                    showRandomTooltip();
                 }
                 setStats();
                 break;
@@ -936,6 +942,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);
+                        // update tooltip
+                        tvTooltip.setText(getResources().getString(R.string.tooltip_stats_regenerate));
                     }
                 }
 
@@ -950,17 +958,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 // set stats
                 setStats();
                 break;
-            case R.id.spn_type:
+            case R.id.spn_card_type:
                 // start animation to prompt user that stats will not regenerate automatically
                 if (!Utils.isStringEmpty(mSelectedType)) {
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);
+                        // update tooltip
+                        tvTooltip.setText(getResources().getString(R.string.tooltip_stats_regenerate));
                     }
                 }
 
                 // set selected type
                 mSelectedType = arryType[position];
+
+                // disable ascension editText field if Squad Leader is selected
+                if (mSelectedType.equalsIgnoreCase(arryType[arryType.length - 1])) {
+                    toggleEditTextAsc(false);
+                } else {
+                    toggleEditTextAsc(true);
+                }
 
                 // return if both affinity and type is not selected
                 if (position == 0 || spnAffinity.getSelectedItemPosition() == 0) {
@@ -975,9 +992,30 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         }
     }
 
+    /**
+     * Method is used to toggle edtAsc to be enabled or disabled
+     * @param isEnabled
+     */
+    private void toggleEditTextAsc(boolean isEnabled) {
+        if (!Utils.checkIfNull(stats) && !Utils.checkIfNull(stats.getCardType()) &&
+                !mSelectedType.equalsIgnoreCase(arryType[0])) {
+            tvMaxAsc.setText("/ " + String.valueOf(getMaxAsc(getCardType(mSelectedType))));
+        }
+
+        if (isEnabled) {
+            edtAsc.setEnabled(true);
+            edtAsc.setTextColor(Utils.getColor(mContext, R.color.material_green_500_color_code));
+            edtAsc.setBackgroundColor(Utils.getColor(mContext, R.color.white));
+        } else {
+            edtAsc.setEnabled(false);
+            edtAsc.setTextColor(Utils.getColor(mContext, R.color.black));
+            edtAsc.setBackgroundColor(Utils.getColor(mContext, R.color.material_grey_300_color_code));
+        }
+    }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        // do nothing
     }
 
     /**
@@ -993,6 +1031,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 isEditable = true;
                 edtLv.setFocusable(true);
                 edtLv.setFocusableInTouchMode(true);
+                edtLv.setTextColor(Utils.getColor(mContext, R.color.material_green_500_color_code));
                 edtAsc.setFocusable(true);
                 edtAsc.setFocusableInTouchMode(true);
 
@@ -1040,31 +1079,31 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
                         // update hp
                         int hp = stats.getHp();
-                        tvHp.setText(String.valueOf((int)(hp + (hp * multiplierStats))));
+                        tvHp.setText(String.valueOf((int) (hp + (hp * multiplierStats))));
 
                         // update str
                         int str = stats.getStr();
-                        tvStr.setText(String.valueOf((int)(str + (str * multiplierStats))));
+                        tvStr.setText(String.valueOf((int) (str + (str * multiplierStats))));
 
                         // update spd
                         int spd = stats.getSpd();
-                        tvSpd.setText(String.valueOf((int)(spd + (spd * multiplierStats))));
+                        tvSpd.setText(String.valueOf((int) (spd + (spd * multiplierStats))));
 
                         // update wis
                         int wis = stats.getWis();
-                        tvWis.setText(String.valueOf((int)(wis + (wis * multiplierStats))));
+                        tvWis.setText(String.valueOf((int) (wis + (wis * multiplierStats))));
 
                         // update phyDef
                         int phyDef = stats.getPhyDef();
-                        tvPhyDef.setText(String.valueOf((int)(phyDef + (phyDef * multiplierStats))));
+                        tvPhyDef.setText(String.valueOf((int) (phyDef + (phyDef * multiplierStats))));
 
                         // update magDef
                         int magDef = stats.getMagDef();
-                        tvMagDef.setText(String.valueOf((int)(magDef + (magDef * multiplierStats))));
+                        tvMagDef.setText(String.valueOf((int) (magDef + (magDef * multiplierStats))));
 
                         // update crit
                         int crit = stats.getCrit();
-                        tvCrit.setText(String.valueOf((int)(crit + (crit * multiplierStats))));
+                        tvCrit.setText(String.valueOf((int) (crit + (crit * multiplierStats))));
 
                         // print stats to console
                         printStats();

@@ -11,13 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cde4b3eb-23d1-4bbb-80f6-9291c4e9c5d1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
     </list>
     <ignored path="STATTOOL-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,20 +47,20 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="130" column="35" selection-start-line="130" selection-start-column="32" selection-end-line="130" selection-end-column="35" />
+            <state relative-caret-position="407">
+              <caret line="520" column="29" selection-start-line="520" selection-start-column="29" selection-end-line="520" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#7153#7963#0" expanded="true" />
                 <element signature="e#7962#7963#0" expanded="true" />
                 <element signature="e#12570#12628#0" expanded="false" />
-                <element signature="e#32690#32740#0" expanded="true" />
-                <element signature="e#32869#32911#0" expanded="true" />
-                <element signature="e#32937#32975#0" expanded="true" />
-                <element signature="e#33002#33040#0" expanded="true" />
-                <element signature="e#33068#33106#0" expanded="true" />
-                <element signature="e#37723#37782#0" expanded="true" />
-                <element signature="e#38658#38717#0" expanded="true" />
+                <element signature="e#32698#32748#0" expanded="true" />
+                <element signature="e#32877#32919#0" expanded="true" />
+                <element signature="e#32945#32983#0" expanded="true" />
+                <element signature="e#33010#33048#0" expanded="true" />
+                <element signature="e#33076#33114#0" expanded="true" />
+                <element signature="e#37731#37790#0" expanded="true" />
+                <element signature="e#38666#38725#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2471,7 +2466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1490887655025</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="increased stats overall and increased HP specifically. Updated stat tool functionality and messaging">
+      <created>1501444215228</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1501444215228</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2525,7 +2527,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="system file update" />
     <MESSAGE value="gradle update" />
-    <option name="LAST_COMMIT_MESSAGE" value="gradle update" />
+    <MESSAGE value="increased stats overall and increased HP specifically. Updated stat tool functionality and messaging" />
+    <option name="LAST_COMMIT_MESSAGE" value="increased stats overall and increased HP specifically. Updated stat tool functionality and messaging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2551,13 +2554,13 @@
             <element signature="e#7153#7963#0" expanded="true" />
             <element signature="e#7962#7963#0" expanded="true" />
             <element signature="e#12570#12628#0" expanded="false" />
-            <element signature="e#32690#32740#0" expanded="true" />
-            <element signature="e#32869#32911#0" expanded="true" />
-            <element signature="e#32937#32975#0" expanded="true" />
-            <element signature="e#33002#33040#0" expanded="true" />
-            <element signature="e#33068#33106#0" expanded="true" />
-            <element signature="e#37723#37782#0" expanded="true" />
-            <element signature="e#38658#38717#0" expanded="true" />
+            <element signature="e#32698#32748#0" expanded="true" />
+            <element signature="e#32877#32919#0" expanded="true" />
+            <element signature="e#32945#32983#0" expanded="true" />
+            <element signature="e#33010#33048#0" expanded="true" />
+            <element signature="e#33076#33114#0" expanded="true" />
+            <element signature="e#37731#37790#0" expanded="true" />
+            <element signature="e#38666#38725#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2571,13 +2574,13 @@
             <element signature="e#7153#7963#0" expanded="true" />
             <element signature="e#7962#7963#0" expanded="true" />
             <element signature="e#12570#12628#0" expanded="false" />
-            <element signature="e#32690#32740#0" expanded="true" />
-            <element signature="e#32869#32911#0" expanded="true" />
-            <element signature="e#32937#32975#0" expanded="true" />
-            <element signature="e#33002#33040#0" expanded="true" />
-            <element signature="e#33068#33106#0" expanded="true" />
-            <element signature="e#37723#37782#0" expanded="true" />
-            <element signature="e#38658#38717#0" expanded="true" />
+            <element signature="e#32698#32748#0" expanded="true" />
+            <element signature="e#32877#32919#0" expanded="true" />
+            <element signature="e#32945#32983#0" expanded="true" />
+            <element signature="e#33010#33048#0" expanded="true" />
+            <element signature="e#33076#33114#0" expanded="true" />
+            <element signature="e#37731#37790#0" expanded="true" />
+            <element signature="e#38666#38725#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2591,13 +2594,13 @@
             <element signature="e#7153#7963#0" expanded="true" />
             <element signature="e#7962#7963#0" expanded="true" />
             <element signature="e#12570#12628#0" expanded="false" />
-            <element signature="e#32690#32740#0" expanded="true" />
-            <element signature="e#32869#32911#0" expanded="true" />
-            <element signature="e#32937#32975#0" expanded="true" />
-            <element signature="e#33002#33040#0" expanded="true" />
-            <element signature="e#33068#33106#0" expanded="true" />
-            <element signature="e#37723#37782#0" expanded="true" />
-            <element signature="e#38658#38717#0" expanded="true" />
+            <element signature="e#32698#32748#0" expanded="true" />
+            <element signature="e#32877#32919#0" expanded="true" />
+            <element signature="e#32945#32983#0" expanded="true" />
+            <element signature="e#33010#33048#0" expanded="true" />
+            <element signature="e#33076#33114#0" expanded="true" />
+            <element signature="e#37731#37790#0" expanded="true" />
+            <element signature="e#38666#38725#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2611,13 +2614,13 @@
             <element signature="e#7153#7963#0" expanded="true" />
             <element signature="e#7962#7963#0" expanded="true" />
             <element signature="e#12570#12628#0" expanded="false" />
-            <element signature="e#32690#32740#0" expanded="true" />
-            <element signature="e#32869#32911#0" expanded="true" />
-            <element signature="e#32937#32975#0" expanded="true" />
-            <element signature="e#33002#33040#0" expanded="true" />
-            <element signature="e#33068#33106#0" expanded="true" />
-            <element signature="e#37723#37782#0" expanded="true" />
-            <element signature="e#38658#38717#0" expanded="true" />
+            <element signature="e#32698#32748#0" expanded="true" />
+            <element signature="e#32877#32919#0" expanded="true" />
+            <element signature="e#32945#32983#0" expanded="true" />
+            <element signature="e#33010#33048#0" expanded="true" />
+            <element signature="e#33076#33114#0" expanded="true" />
+            <element signature="e#37731#37790#0" expanded="true" />
+            <element signature="e#38666#38725#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2696,8 +2699,8 @@
         <state relative-caret-position="300">
           <caret line="1505" column="43" selection-start-line="1505" selection-start-column="43" selection-end-line="1505" selection-end-column="43" />
           <folding>
-            <element signature="e#66099#66100#0" expanded="true" />
-            <element signature="e#66127#66128#0" expanded="true" />
+            <element signature="e#66099#66100#0" expanded="false" />
+            <element signature="e#66127#66128#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2720,20 +2723,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="130" column="35" selection-start-line="130" selection-start-column="32" selection-end-line="130" selection-end-column="35" />
+        <state relative-caret-position="407">
+          <caret line="520" column="29" selection-start-line="520" selection-start-column="29" selection-end-line="520" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#7153#7963#0" expanded="true" />
             <element signature="e#7962#7963#0" expanded="true" />
             <element signature="e#12570#12628#0" expanded="false" />
-            <element signature="e#32690#32740#0" expanded="true" />
-            <element signature="e#32869#32911#0" expanded="true" />
-            <element signature="e#32937#32975#0" expanded="true" />
-            <element signature="e#33002#33040#0" expanded="true" />
-            <element signature="e#33068#33106#0" expanded="true" />
-            <element signature="e#37723#37782#0" expanded="true" />
-            <element signature="e#38658#38717#0" expanded="true" />
+            <element signature="e#32698#32748#0" expanded="true" />
+            <element signature="e#32877#32919#0" expanded="true" />
+            <element signature="e#32945#32983#0" expanded="true" />
+            <element signature="e#33010#33048#0" expanded="true" />
+            <element signature="e#33076#33114#0" expanded="true" />
+            <element signature="e#37731#37790#0" expanded="true" />
+            <element signature="e#38666#38725#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -394,27 +394,27 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return hpByAffinity;
     }
 
-    // (C) str base: [35-40]
-    // (R) str base: [37-45]
-    // (E) str base: [42-50]
-    // (L) str base: [50-60]
-    // (M) str base: [60-75]
-    // (SL) str base: [40-48]
+    // (C) str base: [40-45]
+    // (R) str base: [45-55]
+    // (E) str base: [50-60]
+    // (L) str base: [65-80]
+    // (M) str base: [90-110]
+    // (SL) str base: [60-75]
     private int randStrStat(CardType cardType, Affinity affinity) {
         int str = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            str = r.nextInt(6) + 35;
+            str = r.nextInt(6) + 40;
         } else if (cardType.equals(CardType.RARE)) {
-            str = r.nextInt(9) + 37;
+            str = r.nextInt(11) + 45;
         } else if (cardType.equals(CardType.EPIC)) {
-            str = r.nextInt(9) + 42;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
             str = r.nextInt(11) + 50;
+        } else if (cardType.equals(CardType.LEGENDARY)) {
+            str = r.nextInt(16) + 65;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            str = r.nextInt(16) + 60;
+            str = r.nextInt(21) + 90;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            str = r.nextInt(9) + 40;
+            str = r.nextInt(16) + 60;
         }
 
         int baseStr = str + randStrByAffinity(affinity, str);
@@ -504,27 +504,27 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return spdByAffinity;
     }
 
-    // (C) wis base: [35-40]
-    // (R) wis base: [37-45]
-    // (E) wis base: [42-50]
-    // (L) wis base: [50-60]
-    // (M) wis base: [60-75]
-    // (SL) wis base: [40-48]
+    // (C) wis base: [40-45]
+    // (R) wis base: [45-55]
+    // (E) wis base: [50-60]
+    // (L) wis base: [65-80]
+    // (M) wis base: [90-110]
+    // (SL) wis base: [60-75]
     private int randWisStat(CardType cardType, Affinity affinity) {
         int wis = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            wis = r.nextInt(6) + 35;
+            wis = r.nextInt(6) + 40;
         } else if (cardType.equals(CardType.RARE)) {
-            wis = r.nextInt(9) + 37;
+            wis = r.nextInt(11) + 45;
         } else if (cardType.equals(CardType.EPIC)) {
-            wis = r.nextInt(9) + 42;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
             wis = r.nextInt(11) + 50;
+        } else if (cardType.equals(CardType.LEGENDARY)) {
+            wis = r.nextInt(16) + 65;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            wis = r.nextInt(16) + 60;
+            wis = r.nextInt(21) + 90;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            wis = r.nextInt(9) + 40;
+            wis = r.nextInt(16) + 60;
         }
 
         int baseWis = wis + randWisByAffinity(affinity, wis);

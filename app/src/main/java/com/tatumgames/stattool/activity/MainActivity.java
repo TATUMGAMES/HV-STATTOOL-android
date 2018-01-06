@@ -41,6 +41,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.tatumgames.stattool.R;
 import com.tatumgames.stattool.enums.Affinity;
 import com.tatumgames.stattool.enums.CardType;
@@ -50,6 +51,7 @@ import com.tatumgames.stattool.logger.Logger;
 import com.tatumgames.stattool.model.Stats;
 import com.tatumgames.stattool.utils.Utils;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -93,6 +95,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         getIds();
     }

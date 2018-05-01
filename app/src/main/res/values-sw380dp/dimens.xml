@@ -1,0 +1,86 @@
+<resources>
+    <!-- font sizes -->
+    <dimen name="font_size_6">4sp</dimen>
+    <dimen name="font_size_7">5sp</dimen>
+    <dimen name="font_size_8">6sp</dimen>
+    <dimen name="font_size_9">7sp</dimen>
+    <dimen name="font_size_10">8sp</dimen>
+    <dimen name="font_size_11">9sp</dimen>
+    <dimen name="font_size_12">10sp</dimen>
+    <dimen name="font_size_13">11sp</dimen>
+    <dimen name="font_size_14">12sp</dimen>
+    <dimen name="font_size_15">13sp</dimen>
+    <dimen name="font_size_16">14sp</dimen>
+    <dimen name="font_size_17">15sp</dimen>
+    <dimen name="font_size_18">16sp</dimen>
+    <dimen name="font_size_19">17sp</dimen>
+    <dimen name="font_size_20">18sp</dimen>
+    <dimen name="font_size_22">20sp</dimen>
+    <dimen name="font_size_24">22sp</dimen>
+    <dimen name="font_size_26">24sp</dimen>
+    <dimen name="font_size_28">26sp</dimen>
+    <dimen name="font_size_30">28sp</dimen>
+    <dimen name="font_size_32">30sp</dimen>
+    <dimen name="font_size_34">32dp</dimen>
+    <dimen name="font_size_36">34sp</dimen>
+    <dimen name="font_size_38">36sp</dimen>
+    <dimen name="font_size_40">38sp</dimen>
+    <dimen name="font_size_42">40sp</dimen>
+
+    <!-- layout dimension attributes 95% -->
+    <dimen name="scaling_4">4dp</dimen>
+    <dimen name="scaling_5">5dp</dimen>
+    <dimen name="scaling_7">7dp</dimen>
+    <dimen name="scaling_8">9dp</dimen>
+    <dimen name="scaling_10">10dp</dimen>
+    <dimen name="scaling_12">11dp</dimen>
+    <dimen name="scaling_14">13dp</dimen>
+    <dimen name="scaling_15">14dp</dimen>
+    <dimen name="scaling_16">15dp</dimen>
+    <dimen name="scaling_20">19dp</dimen>
+    <dimen name="scaling_24">23dp</dimen>
+    <dimen name="scaling_25">24dp</dimen>
+    <dimen name="scaling_26">25dp</dimen>
+    <dimen name="scaling_28">27dp</dimen>
+    <dimen name="scaling_30">29dp</dimen>
+    <dimen name="scaling_34">32dp</dimen>
+    <dimen name="scaling_35">33dp</dimen>
+    <dimen name="scaling_36">34dp</dimen>
+    <dimen name="scaling_40">38dp</dimen>
+    <dimen name="scaling_44">42dp</dimen>
+    <dimen name="scaling_45">43dp</dimen>
+    <dimen name="scaling_48">46dp</dimen>
+    <dimen name="scaling_50">48dp</dimen>
+    <dimen name="scaling_56">53dp</dimen>
+    <dimen name="scaling_60">57dp</dimen>
+    <dimen name="scaling_64">61dp</dimen>
+    <dimen name="scaling_65">62dp</dimen>
+    <dimen name="scaling_66">63dp</dimen>
+    <dimen name="scaling_70">67dp</dimen>
+    <dimen name="scaling_80">76dp</dimen>
+    <dimen name="scaling_90">86dp</dimen>
+    <dimen name="scaling_100">95dp</dimen>
+    <dimen name="scaling_120">114dp</dimen>
+    <dimen name="scaling_135">128dp</dimen>
+    <dimen name="scaling_140">133dp</dimen>
+    <dimen name="scaling_150">143dp</dimen>
+    <dimen name="scaling_200">190dp</dimen>
+    <dimen name="scaling_220">209dp</dimen>
+    <dimen name="scaling_260">247dp</dimen>
+    <dimen name="scaling_280">266dp</dimen>
+    <dimen name="scaling_300">285dp</dimen>
+    <dimen name="scaling_320">304dp</dimen>
+    <dimen name="scaling_340">323dp</dimen>
+    <dimen name="scaling_360">342dp</dimen>
+    <dimen name="scaling_380">361dp</dimen>
+
+    <!-- layout dimension attributes (negative) -->
+    <dimen name="scaling_neg_8">-8dp</dimen>
+    <dimen name="scaling_neg_10">-10dp</dimen>
+    <dimen name="scaling_neg_12">-11dp</dimen>
+    <dimen name="scaling_neg_20">-19dp</dimen>
+    <dimen name="scaling_neg_30">-29dp</dimen>
+    <dimen name="scaling_neg_35">-33dp</dimen>
+    <dimen name="scaling_neg_40">-38dp</dimen>
+
+</resources>

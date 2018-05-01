@@ -17,17 +17,17 @@ repositories {
 
 // top-level build file to help synchronize library versions
 ext {
-    supportLib = "25.4.0"
+    supportLib = "26.1.0"
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.tatumgames.stattool"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -40,11 +40,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile "com.android.support:support-v4:${supportLib}"
-    compile "com.android.support:appcompat-v7:${supportLib}"
-    compile "com.android.support:design:${supportLib}"
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+	api "com.android.support:support-v4:${supportLib}"
+    api "com.android.support:appcompat-v7:${supportLib}"
+    api "com.android.support:design:${supportLib}"
+    api('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true;
     }
 }

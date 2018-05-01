@@ -1,11 +1,19 @@
 <resources>
-    <!-- Custom Fonts -->
+    <!-- font sizes -->
+    <dimen name="font_size_6">6sp</dimen>
+    <dimen name="font_size_7">7sp</dimen>
     <dimen name="font_size_8">8sp</dimen>
+    <dimen name="font_size_9">9sp</dimen>
     <dimen name="font_size_10">10sp</dimen>
+    <dimen name="font_size_11">11sp</dimen>
     <dimen name="font_size_12">12sp</dimen>
+    <dimen name="font_size_13">13sp</dimen>
     <dimen name="font_size_14">14sp</dimen>
+    <dimen name="font_size_15">15sp</dimen>
     <dimen name="font_size_16">16sp</dimen>
+    <dimen name="font_size_17">17sp</dimen>
     <dimen name="font_size_18">18sp</dimen>
+    <dimen name="font_size_19">19sp</dimen>
     <dimen name="font_size_20">20sp</dimen>
     <dimen name="font_size_22">22sp</dimen>
     <dimen name="font_size_24">24sp</dimen>
@@ -18,16 +26,8 @@
     <dimen name="font_size_38">38sp</dimen>
     <dimen name="font_size_40">40sp</dimen>
     <dimen name="font_size_42">42sp</dimen>
-    <dimen name="font_size_48">48sp</dimen>
-    <dimen name="font_size_50">50sp</dimen>
-    <dimen name="font_size_58">58sp</dimen>
-    <dimen name="font_size_66">66sp</dimen>
-    <dimen name="font_size_70">70sp</dimen>
-    <dimen name="font_size_80">80sp</dimen>
-    <dimen name="font_size_90">90sp</dimen>
-    <dimen name="font_size_100">100sp</dimen>
 
-    <!-- layout dimension attributes (positive) -->
+    <!-- layout dimension attributes -->
     <dimen name="scaling_4">4dp</dimen>
     <dimen name="scaling_5">5dp</dimen>
     <dimen name="scaling_7">7dp</dimen>
@@ -64,7 +64,7 @@
     <dimen name="scaling_135">135dp</dimen>
     <dimen name="scaling_140">140dp</dimen>
     <dimen name="scaling_150">150dp</dimen>
-    <dimen name="scaling_170">170dp</dimen>
+    <dimen name="scaling_170">162dp</dimen>
     <dimen name="scaling_200">200dp</dimen>
     <dimen name="scaling_220">220dp</dimen>
     <dimen name="scaling_260">260dp</dimen>

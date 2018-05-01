@@ -1,41 +1,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/material_grey_300_color_code"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_grey_300_color_code"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="6dp"
+        android:padding="@dimen/scaling_5"
         android:scaleType="fitCenter"
-        android:src="@mipmap/logo_text"/>
+        android:src="@drawable/logo_text" />
 
     <!-- tooltip -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="@dimen/scaling_90"
         android:background="@color/material_light_blue_300_color_code"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/scaling_10">
 
         <TextView
             android:id="@+id/tv_tooltip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_16"/>
+            android:textSize="@dimen/font_size_16" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="@dimen/scaling_10">
 
         <TextView
             android:id="@+id/tv_header_affinity"
@@ -44,53 +42,53 @@
             android:text="@string/choose_affinity"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_18"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spn_affinity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_header_affinity"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/scaling_5"
             android:drawSelectorOnTop="true"
-            android:padding="2dp"
+            android:padding="@dimen/scaling_4"
             android:prompt="@string/spinner_default_txt"
             android:spinnerStyle="@android:style/Widget.Spinner.DropDown"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_size_24"/>
+            android:textSize="@dimen/font_size_24" />
 
         <TextView
             android:id="@+id/tv_header_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/spn_affinity"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/scaling_10"
             android:text="@string/choose_card_type"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_18"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spn_card_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_header_type"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/scaling_5"
             android:drawSelectorOnTop="true"
-            android:padding="2dp"
+            android:padding="@dimen/scaling_4"
             android:prompt="@string/spinner_default_txt"
             android:spinnerStyle="@android:style/Widget.Spinner.DropDown"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_size_24"/>
+            android:textSize="@dimen/font_size_24" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/scaling_10"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/scaling_10">
 
         <!-- row 1 -->
         <LinearLayout
@@ -111,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lv"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <EditText
                     android:id="@+id/edt_lv"
@@ -125,16 +123,17 @@
                     android:singleLine="true"
                     android:textColor="@color/material_green_500_color_code"
                     android:textColorHint="@color/material_grey_400_color_code"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_max_lv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="@string/num"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/asc"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <EditText
                     android:id="@+id/edt_asc"
@@ -163,16 +162,17 @@
                     android:singleLine="true"
                     android:textColor="@color/material_green_500_color_code"
                     android:textColorHint="@color/material_grey_400_color_code"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_max_asc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="@string/num"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -187,16 +187,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_hp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
         </LinearLayout>
 
@@ -220,16 +221,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/str"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -244,16 +246,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/spd"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_spd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -268,16 +271,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/wis"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_wis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
         </LinearLayout>
 
@@ -301,16 +305,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/phy_def"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_phy_def"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -325,16 +330,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/mag_def"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_mag_def"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -349,16 +355,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/crit"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
 
                 <TextView
                     android:id="@+id/tv_crit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/scaling_4"
+                    android:layout_marginStart="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_18"/>
+                    android:textSize="@dimen/font_size_18" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -367,30 +374,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_reset_to_base"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:padding="10dp"
+            android:padding="@dimen/scaling_10"
             android:text="@string/reset"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_size_20"/>
+            android:textSize="@dimen/font_size_20" />
 
         <Button
             android:id="@+id/btn_regenerate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:background="@drawable/custom_button_orange"
             android:gravity="center"
-            android:padding="4dp"
-            android:layout_gravity="bottom"
+            android:padding="@dimen/scaling_4"
             android:text="@string/regenerate"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_20"/>
+            android:textSize="@dimen/font_size_20" />
 
     </LinearLayout>
 

@@ -1,2 +1,2 @@
-# STATTOOL-android
-Tatum Games Stat Tool generates base stats
+# STAT TOOL - Android
+Stat Tool generates base stats used for HV game balancing

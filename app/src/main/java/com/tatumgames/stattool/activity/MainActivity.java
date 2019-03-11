@@ -51,30 +51,14 @@ import com.tatumgames.stattool.logger.Logger;
 import com.tatumgames.stattool.model.Stats;
 import com.tatumgames.stattool.utils.Utils;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fabric.sdk.android.Fabric;
+
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     public static final String TAG = MainActivity.class.getSimpleName();
-
-    private Context mContext;
-    private Stats stats;
-    private SensorManager mSensorManager;
-    private ShakeEventListener mSensorListener;
-    private Vibrator v;
-    private Spinner spnAffinity, spnType;
-    private EditText edtLv, edtAsc;
-    private TextView tvHp, tvStr, tvSpd, tvWis, tvPhyDef, tvMagDef, tvCrit, tvTooltip, tvMaxLv, tvMaxAsc,
-            tvResetToBase;
-    private Button btnRegenerate;
-
-    private boolean isDefaultSet, isPaused, isEditable, isBaseStatsSet, isAnimationStarted;
-    private String mSelectedAffinity, mSelectedType;
-    private String[] arryAffinity, arryType;
-    private Random r;
-    private Timer mTimer;
 
     private static final int VIBRATE_TIMER = 500; // milliseconds
     private static final int TIMER = 60000; // milliseconds
@@ -83,6 +67,23 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private static final double MULTIPLIER_LEVEL_STATS = 0.05; // percent
     private static final double[] MULTIPLIER_TIER = {1, 0.9, 0.75, 0.55, 0.4, 0.25}; // arbitrary value
     private static final String SELECT_OPTION = "SELECT OPTION";
+    private static final String FORWARD_SLASH = "/ ";
+
+    private Context mContext;
+    private Stats stats;
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
+    private Vibrator v;
+    private Spinner spnAffinity, spnType;
+    private EditText edtLv, edtAsc;
+    private TextView tvHp, tvStr, tvSpd, tvWis, tvPhyDef, tvMagDef, tvCrit, tvTooltip, tvMaxLv, tvMaxAsc;
+    private Button btnRegenerate;
+
+    private boolean isDefaultSet, isPaused, isEditable, isBaseStatsSet, isAnimationStarted;
+    private String mSelectedAffinity, mSelectedType;
+    private String[] arryAffinity, arryType;
+    private Random rand;
+    private Timer mTimer;
     private Animation animation;
 
     private int mMaxLv;
@@ -95,41 +96,53 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+
+        // instantiate Fabric API
         Fabric.with(this, new Crashlytics());
+        // set the activity content from a layout resource
         setContentView(R.layout.activity_main);
-        getIds();
+
+        // intialize views and listeners
+        initializeViews();
+        initializeListeners();
     }
 
     /**
      * Method is used to instantiate objects and views
      */
-    private void getIds() {
+    private void initializeViews() {
         mContext = MainActivity.this;
         stats = new Stats();
-        r = new Random();
+        rand = new Random();
         mTimer = new Timer();
+
+        // initialize vibrator and sensor for device shake detector
         v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mSensorListener = new ShakeEventListener();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        // constructor to use when building an AlphaAnimation from code
         animation = new AlphaAnimation(1.0F, 0.4F);
-        edtLv = (EditText) findViewById(R.id.edt_lv);
-        edtAsc = (EditText) findViewById(R.id.edt_asc);
-        tvHp = (TextView) findViewById(R.id.tv_hp);
-        tvStr = (TextView) findViewById(R.id.tv_str);
-        tvSpd = (TextView) findViewById(R.id.tv_spd);
-        tvWis = (TextView) findViewById(R.id.tv_wis);
-        tvPhyDef = (TextView) findViewById(R.id.tv_phy_def);
-        tvMagDef = (TextView) findViewById(R.id.tv_mag_def);
-        tvCrit = (TextView) findViewById(R.id.tv_crit);
-        tvTooltip = (TextView) findViewById(R.id.tv_tooltip);
-        tvMaxLv = (TextView) findViewById(R.id.tv_max_lv);
-        tvMaxAsc = (TextView) findViewById(R.id.tv_max_asc);
-        tvResetToBase = (TextView) findViewById(R.id.tv_reset_to_base);
-        spnAffinity = (Spinner) findViewById(R.id.spn_affinity);
-        spnType = (Spinner) findViewById(R.id.spn_card_type);
+
+        // initialize views
+        edtLv = findViewById(R.id.edt_lv);
+        edtAsc = findViewById(R.id.edt_asc);
+        tvHp = findViewById(R.id.tv_hp);
+        tvStr = findViewById(R.id.tv_str);
+        tvSpd = findViewById(R.id.tv_spd);
+        tvWis = findViewById(R.id.tv_wis);
+        tvPhyDef = findViewById(R.id.tv_phy_def);
+        tvMagDef = findViewById(R.id.tv_mag_def);
+        tvCrit = findViewById(R.id.tv_crit);
+        tvTooltip = findViewById(R.id.tv_tooltip);
+        tvMaxLv = findViewById(R.id.tv_max_lv);
+        tvMaxAsc = findViewById(R.id.tv_max_asc);
+        TextView tvResetToBase = findViewById(R.id.tv_reset_to_base);
+        spnAffinity = findViewById(R.id.spn_affinity);
+        spnType = findViewById(R.id.spn_card_type);
         arryAffinity = getResources().getStringArray(R.array.arryAffinity);
         arryType = getResources().getStringArray(R.array.arryCardType);
-        btnRegenerate = (Button) findViewById(R.id.btn_regenerate);
+        btnRegenerate = findViewById(R.id.btn_regenerate);
 
         // set animation attributes
         animation.setDuration(300); // Duration: 300
@@ -157,11 +170,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         spnType.setOnItemSelectedListener(this);
 
         // set adapter for arrays
-        ArrayAdapter<String> adapterAffinity = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arryAffinity);
-        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arryType);
+        ArrayAdapter<String> adapterAffinity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arryAffinity);
+        ArrayAdapter<String> adapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arryType);
         spnAffinity.setAdapter(adapterAffinity);
         spnType.setAdapter(adapterType);
 
+        // set default tooltip
+        showRandomTooltip();
+    }
+
+    /**
+     * Method is used to initialize listeners
+     */
+    private void initializeListeners() {
         // set shake event listener
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
             @Override
@@ -173,12 +194,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             }
         });
 
+        // onEditorAction listener
         edtAsc.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (Utils.isStringEmpty(String.valueOf(edtAsc.getText()))) {
                     edtAsc.setText("0");
-                    tvMaxLv.setText("/ " + String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText())))));
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
                     if (currLv > mMaxLv) {
@@ -191,7 +213,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             }
         });
 
-        // set editText text change listener
+        // addTextChanged listener
         edtAsc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -208,7 +230,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 // update max level based on inputted asc
                 if (!Utils.isStringEmpty(String.valueOf(edtAsc.getText())) && isBaseStatsSet &&
                         Integer.parseInt(String.valueOf(edtAsc.getText())) > 0) {
-                    tvMaxLv.setText("/ " + String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText())))));
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
                     if (currLv > mMaxLv) {
@@ -220,6 +242,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             }
         });
 
+        // onEditorAction listener
         edtLv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -231,7 +254,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             }
         });
 
-        // set editText text change listener
+        // addTextChanged listener
         edtLv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -255,9 +278,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 }
             }
         });
-
-        // set default tooltip
-        showRandomTooltip();
     }
 
     /**
@@ -278,7 +298,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else {
             if (!isAnimationStarted) {
                 // set random tooltip message
-                int rand = r.nextInt(9);
+                int rand = this.rand.nextInt(9);
                 if (rand == 0) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_change_lv_and_asc));
                 } else if (rand == 1) {
@@ -342,27 +362,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         }
     }
 
-    // (C) hp base: [350-400]
-    // (R) hp base: [400-475]
-    // (E) hp base: [475-550]
-    // (L) hp base: [575-675]
-    // (M) hp base: [700-850]
-    // (SL) hp base: [437-512]
-    private int randHpStatHigh(CardType cardType, Affinity affinity) {
+    /**
+     * Method is used to calculate HP base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) hp base: [350-400]
+     * (R) hp base: [400-475]
+     * (E) hp base: [475-550]
+     * (L) hp base: [575-675]
+     * (M) hp base: [700-850]
+     * (SL) hp base: [437-512]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return HP base value
+     */
+    private int randHpStatBase(CardType cardType, Affinity affinity) {
         int hp = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            hp = r.nextInt(51) + 350;
+            hp = rand.nextInt(51) + 350;
         } else if (cardType.equals(CardType.RARE)) {
-            hp = r.nextInt(76) + 400;
+            hp = rand.nextInt(76) + 400;
         } else if (cardType.equals(CardType.EPIC)) {
-            hp = r.nextInt(76) + 475;
+            hp = rand.nextInt(76) + 475;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            hp = r.nextInt(101) + 575;
+            hp = rand.nextInt(101) + 575;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            hp = r.nextInt(151) + 700;
+            hp = rand.nextInt(151) + 700;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            hp = r.nextInt(76) + 437;
+            hp = rand.nextInt(76) + 437;
         }
 
         int baseHp = hp + randHpByAffinity(affinity, hp);
@@ -370,13 +402,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseHp;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * base HP will be, [baseHp = randomized hp + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param hp       Randomized value to be added to create the Base HP stat
+     * @return Value based on affinity
+     */
     private int randHpByAffinity(Affinity affinity, int hp) {
         int hpByAffinity = 0;
 
@@ -397,27 +441,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return hpByAffinity;
     }
 
-    // (C) str base: [40-45]
-    // (R) str base: [45-55]
-    // (E) str base: [50-60]
-    // (L) str base: [65-80]
-    // (M) str base: [90-110]
-    // (SL) str base: [60-75]
+    /**
+     * Method is used to calculate Strength base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) str base: [40-45]
+     * (R) str base: [45-55]
+     * (E) str base: [50-60]
+     * (L) str base: [65-80]
+     * (M) str base: [90-110]
+     * (SL) str base: [60-75]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Strength base value
+     */
     private int randStrStat(CardType cardType, Affinity affinity) {
         int str = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            str = r.nextInt(6) + 40;
+            str = rand.nextInt(6) + 40;
         } else if (cardType.equals(CardType.RARE)) {
-            str = r.nextInt(11) + 45;
+            str = rand.nextInt(11) + 45;
         } else if (cardType.equals(CardType.EPIC)) {
-            str = r.nextInt(11) + 50;
+            str = rand.nextInt(11) + 50;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            str = r.nextInt(16) + 65;
+            str = rand.nextInt(16) + 65;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            str = r.nextInt(21) + 90;
+            str = rand.nextInt(21) + 90;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            str = r.nextInt(16) + 60;
+            str = rand.nextInt(16) + 60;
         }
 
         int baseStr = str + randStrByAffinity(affinity, str);
@@ -425,13 +481,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseStr;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * Strength value will be, [baseStr = randomized str + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param str      Randomized value to be added to create the Base Strength stat
+     * @return Value based on affinity
+     */
     private int randStrByAffinity(Affinity affinity, int str) {
         int strByAffinity = 0;
 
@@ -452,27 +520,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return strByAffinity;
     }
 
-    // (C) spd base: [35-40]
-    // (R) spd base: [37-45]
-    // (E) spd base: [42-50]
-    // (L) spd base: [50-60]
-    // (M) spd base: [60-75]
-    // (SL) spd base: [40-48]
+    /**
+     * Method is used to calculate Speed base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) spd base: [35-40]
+     * (R) spd base: [37-45]
+     * (E) spd base: [42-50]
+     * (L) spd base: [50-60]
+     * (M) spd base: [60-75]
+     * (SL) spd base: [40-48]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Speed base value
+     */
     private int randSpdStat(CardType cardType, Affinity affinity) {
         int spd = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            spd = r.nextInt(6) + 35;
+            spd = rand.nextInt(6) + 35;
         } else if (cardType.equals(CardType.RARE)) {
-            spd = r.nextInt(9) + 37;
+            spd = rand.nextInt(9) + 37;
         } else if (cardType.equals(CardType.EPIC)) {
-            spd = r.nextInt(9) + 42;
+            spd = rand.nextInt(9) + 42;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            spd = r.nextInt(11) + 50;
+            spd = rand.nextInt(11) + 50;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            spd = r.nextInt(16) + 60;
+            spd = rand.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            spd = r.nextInt(9) + 40;
+            spd = rand.nextInt(9) + 40;
         }
 
         int baseSpd = spd + randSpdByAffinity(affinity, spd);
@@ -480,13 +560,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseSpd;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * Speed value will be, [baseSpd = randomized spd + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param spd      Randomized value to be added to create the Base Speed stat
+     * @return Value based on affinity
+     */
     private int randSpdByAffinity(Affinity affinity, int spd) {
         int spdByAffinity = 0;
 
@@ -507,27 +599,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return spdByAffinity;
     }
 
-    // (C) wis base: [40-45]
-    // (R) wis base: [45-55]
-    // (E) wis base: [50-60]
-    // (L) wis base: [65-80]
-    // (M) wis base: [90-110]
-    // (SL) wis base: [60-75]
+    /**
+     * Method is used to calculate Wisdom base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) wis base: [40-45]
+     * (R) wis base: [45-55]
+     * (E) wis base: [50-60]
+     * (L) wis base: [65-80]
+     * (M) wis base: [90-110]
+     * (SL) wis base: [60-75]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Wisdom base value
+     */
     private int randWisStat(CardType cardType, Affinity affinity) {
         int wis = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            wis = r.nextInt(6) + 40;
+            wis = rand.nextInt(6) + 40;
         } else if (cardType.equals(CardType.RARE)) {
-            wis = r.nextInt(11) + 45;
+            wis = rand.nextInt(11) + 45;
         } else if (cardType.equals(CardType.EPIC)) {
-            wis = r.nextInt(11) + 50;
+            wis = rand.nextInt(11) + 50;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            wis = r.nextInt(16) + 65;
+            wis = rand.nextInt(16) + 65;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            wis = r.nextInt(21) + 90;
+            wis = rand.nextInt(21) + 90;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            wis = r.nextInt(16) + 60;
+            wis = rand.nextInt(16) + 60;
         }
 
         int baseWis = wis + randWisByAffinity(affinity, wis);
@@ -535,13 +639,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseWis;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * Wisdom value will be, [baseSpd = randomized spd + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param wis      Randomized value to be added to create the Base Wisdom stat
+     * @return Value based on affinity
+     */
     private int randWisByAffinity(Affinity affinity, int wis) {
         int wisByAffinity = 0;
 
@@ -562,27 +678,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return wisByAffinity;
     }
 
-    // (C) phyDef base: [35-40]
-    // (R) phyDef base: [37-45]
-    // (E) phyDef base: [42-50]
-    // (L) phyDef base: [50-60]
-    // (M) phyDef base: [60-75]
-    // (SL) phyDef base: [40-48]
+    /**
+     * Method is used to calculate Physical Defense base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) phyDef base: [35-40]
+     * (R) phyDef base: [37-45]
+     * (E) phyDef base: [42-50]
+     * (L) phyDef base: [50-60]
+     * (M) phyDef base: [60-75]
+     * (SL) phyDef base: [40-48]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Physical Defense base value
+     */
     private int randPhyDefStat(CardType cardType, Affinity affinity) {
         int phyDef = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            phyDef = r.nextInt(6) + 35;
+            phyDef = rand.nextInt(6) + 35;
         } else if (cardType.equals(CardType.RARE)) {
-            phyDef = r.nextInt(9) + 37;
+            phyDef = rand.nextInt(9) + 37;
         } else if (cardType.equals(CardType.EPIC)) {
-            phyDef = r.nextInt(9) + 42;
+            phyDef = rand.nextInt(9) + 42;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            phyDef = r.nextInt(11) + 50;
+            phyDef = rand.nextInt(11) + 50;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            phyDef = r.nextInt(16) + 60;
+            phyDef = rand.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            phyDef = r.nextInt(9) + 40;
+            phyDef = rand.nextInt(9) + 40;
         }
 
         int basePhyDef = phyDef + randPhyDefByAffinity(affinity, phyDef);
@@ -590,13 +718,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return basePhyDef;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * Physical Defense value will be, [baseSpd = randomized spd + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param phyDef   Randomized value to be added to create the Base Physical Defense stat
+     * @return Value based on affinity
+     */
     private int randPhyDefByAffinity(Affinity affinity, int phyDef) {
         int phyDefByAffinity = 0;
 
@@ -617,27 +757,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return phyDefByAffinity;
     }
 
-    // (C) magDef base: [35-40]
-    // (R) magDef base: [37-45]
-    // (E) magDef base: [42-50]
-    // (L) magDef base: [50-60]
-    // (M) magDef base: [60-75]
-    // (SL) magDef base: [40-48]
+    /**
+     * Method is used to calculate Magical Defense base stat using cardType and affinity to generate
+     * a randomized value
+     *
+     * <p>
+     * (C) magDef base: [35-40]
+     * (R) magDef base: [37-45]
+     * (E) magDef base: [42-50]
+     * (L) magDef base: [50-60]
+     * (M) magDef base: [60-75]
+     * (SL) magDef base: [40-48]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Magical Defense base value
+     */
     private int randMagDefStat(CardType cardType, Affinity affinity) {
         int magDef = 0;
 
         if (cardType.equals(CardType.COMMON)) {
-            magDef = r.nextInt(6) + 35;
+            magDef = rand.nextInt(6) + 35;
         } else if (cardType.equals(CardType.RARE)) {
-            magDef = r.nextInt(9) + 37;
+            magDef = rand.nextInt(9) + 37;
         } else if (cardType.equals(CardType.EPIC)) {
-            magDef = r.nextInt(9) + 42;
+            magDef = rand.nextInt(9) + 42;
         } else if (cardType.equals(CardType.LEGENDARY)) {
-            magDef = r.nextInt(11) + 50;
+            magDef = rand.nextInt(11) + 50;
         } else if (cardType.equals(CardType.MYTHIC)) {
-            magDef = r.nextInt(16) + 60;
+            magDef = rand.nextInt(16) + 60;
         } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            magDef = r.nextInt(9) + 40;
+            magDef = rand.nextInt(9) + 40;
         }
 
         int baseMagDef = magDef + randMagDefByAffinity(affinity, magDef);
@@ -645,13 +797,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return baseMagDef;
     }
 
-    // multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-    // Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-    // Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-    // Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-    // Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-    // Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-    // Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+    /**
+     * Method is used to return back a value based on affinity. This contributes to what the final
+     * Magical Defense value will be, [baseSpd = randomized spd + value based on affinity]
+     *
+     * <p>
+     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
+     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
+     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
+     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
+     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
+     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
+     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
+     * </p>
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @param magDef   Randomized value to be added to create the Base Magical Defense stat
+     * @return Value based on affinity
+     */
     private int randMagDefByAffinity(Affinity affinity, int magDef) {
         int magDefByAffinity = 0;
 
@@ -672,13 +836,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         return magDefByAffinity;
     }
 
-    // (C) critPerc base: [2]
-    // (R) critPerc base: [4]
-    // (E) critPerc base: [6]
-    // (L) critPerc base: [8]
-    // (M) critPerc base: [10]
-    // (SL) critPerc base: [5]
-    // crit percentage is not affinity linked
+    /**
+     * Method is used to calculate chance to perform critical attack. Note that crit percentage
+     * is not affinity linked
+     *
+     * <p>
+     * (C) critPerc base: [2]
+     * (R) critPerc base: [4]
+     * (E) critPerc base: [6]
+     * (L) critPerc base: [8]
+     * (M) critPerc base: [10]
+     * (SL) critPerc base: [5]
+     * </p>
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @return Percentage represented value to perfrom critical attack
+     */
     private int randCritPercStat(CardType cardType) {
         if (cardType.equals(CardType.COMMON)) {
             stats.setCrit(2);
@@ -704,8 +877,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     /**
      * Retrieve base max level
      *
-     * @param cardType
-     * @return
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @param currAsc  The maximum level of a Guardian increases based on the Ascension (Asc) level
+     * @return Maximum level based on cardType
      */
     private int getMaxLv(CardType cardType, int currAsc) {
         mMaxLv = 0;
@@ -732,10 +906,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     /**
      * Retrieve maximum ascension level
+     * <p>Squad Leader return 0 ascension by default</p>
      *
-     * @note Squad Leader return 0 ascension by default.
-     * @param cardType
-     * @return
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @return Maximum ascension level based on cardType
      */
     private int getMaxAsc(CardType cardType) {
         // SQUAD_LEADER max ascension
@@ -758,8 +932,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     /**
      * Helper method to convert String affinity to Affinity object
      *
-     * @param affinity
-     * @return
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
+     * @return Object containing Affinity information
      */
     private Affinity getAffinity(String affinity) {
         if (affinity.equalsIgnoreCase(String.valueOf(Affinity.ROBOTIC))) {
@@ -785,8 +960,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     /**
      * Helper method to convert String cardType to CardType object
      *
-     * @param cardType
-     * @return
+     * @param cardType This represents the strength and rarity of the card or Guardian
+     * @return Object containing cardType information
      */
     private CardType getCardType(String cardType) {
         if (cardType.equalsIgnoreCase(String.valueOf(CardType.COMMON))) {
@@ -862,8 +1037,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 !mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
             edtLv.setText("1");
             edtAsc.setText("0");
-            tvMaxLv.setText("/ " + String.valueOf(getMaxLv(stats.getCardType(), 0)));
-            tvMaxAsc.setText("/ " + String.valueOf(getMaxAsc(stats.getCardType())));
+            tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(stats.getCardType(), 0))));
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(stats.getCardType()))));
             tvHp.setText(String.valueOf(stats.getHp()));
             tvStr.setText(String.valueOf(stats.getStr()));
             tvSpd.setText(String.valueOf(stats.getSpd()));
@@ -913,6 +1088,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             Logger.i(TAG, "button click intercepted/blocked");
             return;
         }
+
         switch (v.getId()) {
             case R.id.btn_regenerate:
                 // regenerate will generate new base stats
@@ -926,6 +1102,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                     // show randon tooltip
                     showRandomTooltip();
                 }
+                // set stats
                 setStats();
                 break;
             case R.id.tv_reset_to_base:
@@ -997,12 +1174,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     /**
      * Method is used to toggle edtAsc to be enabled or disabled
-     * @param isEnabled
+     *
+     * @param isEnabled True if ascension editText is editable, otherwise false
      */
     private void toggleEditTextAsc(boolean isEnabled) {
         if (!Utils.checkIfNull(stats) && !Utils.checkIfNull(stats.getCardType()) &&
                 !mSelectedType.equalsIgnoreCase(arryType[0])) {
-            tvMaxAsc.setText("/ " + String.valueOf(getMaxAsc(getCardType(mSelectedType))));
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
         }
 
         if (isEnabled) {
@@ -1052,9 +1230,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             if (!isBaseStatsSet) {
                 Logger.d(TAG, "setting base stats");
                 // generate stats and set textView
-                tvMaxLv.setText("/ " + String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText())))));
-                tvMaxAsc.setText("/ " + String.valueOf(getMaxAsc(getCardType(mSelectedType))));
-                tvHp.setText(String.valueOf(randHpStatHigh(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
+                tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
+                tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
+                tvHp.setText(String.valueOf(randHpStatBase(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
                 tvStr.setText(String.valueOf(randStrStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
                 tvSpd.setText(String.valueOf(randSpdStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
                 tvWis.setText(String.valueOf(randWisStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
@@ -1078,7 +1256,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         double multiplierStats = (level - 1) * MULTIPLIER_LEVEL_STATS;
 
                         // update asc
-                        tvMaxAsc.setText("/ " + String.valueOf(getMaxAsc(getCardType(mSelectedType))));
+                        tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
 
                         // update hp
                         int hp = stats.getHp();
@@ -1136,16 +1314,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     @Override
     protected void onPause() {
+        // unregisters a listener for all sensors
         mSensorManager.unregisterListener(mSensorListener);
+        // set flag
         isPaused = true;
         super.onPause();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // set flag
         isPaused = false;
+        // events will be delivered to the provided SensorEventListener as soon as they are available
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);

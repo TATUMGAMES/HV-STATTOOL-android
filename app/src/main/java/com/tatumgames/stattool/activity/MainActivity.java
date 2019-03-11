@@ -1334,6 +1334,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     @Override
     protected void onDestroy() {
+        // stop tooltip timer
         stopTooltipTimer();
         super.onDestroy();
     }

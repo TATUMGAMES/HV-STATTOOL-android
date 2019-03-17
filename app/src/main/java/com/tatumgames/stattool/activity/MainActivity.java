@@ -641,7 +641,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     /**
      * Method is used to return back a value based on affinity. This contributes to what the final
-     * Wisdom value will be, [baseSpd = randomized spd + value based on affinity]
+     * Wisdom value will be, [baseWis = randomized wis + value based on affinity]
      *
      * <p>
      * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
@@ -720,7 +720,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     /**
      * Method is used to return back a value based on affinity. This contributes to what the final
-     * Physical Defense value will be, [baseSpd = randomized spd + value based on affinity]
+     * Physical Defense value will be, [basePhyDef = randomized phyDef + value based on affinity]
      *
      * <p>
      * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
@@ -799,7 +799,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     /**
      * Method is used to return back a value based on affinity. This contributes to what the final
-     * Magical Defense value will be, [baseSpd = randomized spd + value based on affinity]
+     * Magical Defense value will be, [baseMagDef = randomized magDef + value based on affinity]
      *
      * <p>
      * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
@@ -850,7 +850,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * </p>
      *
      * @param cardType This represents the strength and rarity of the card or Guardian
-     * @return Percentage represented value to perfrom critical attack
+     * @return Percentage represented value to perform critical attack
      */
     private int randCritPercStat(CardType cardType) {
         if (cardType.equals(CardType.COMMON)) {

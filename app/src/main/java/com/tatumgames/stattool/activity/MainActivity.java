@@ -18,17 +18,21 @@ package com.tatumgames.stattool.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -38,26 +42,44 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
+import com.tatumgames.stattool.BuildConfig;
 import com.tatumgames.stattool.R;
-import com.tatumgames.stattool.enums.Affinity;
-import com.tatumgames.stattool.enums.CardType;
+import com.tatumgames.stattool.enums.Enum;
 import com.tatumgames.stattool.helper.InputFilterMinMax;
 import com.tatumgames.stattool.listener.ShakeEventListener;
 import com.tatumgames.stattool.logger.Logger;
-import com.tatumgames.stattool.model.Stats;
+import com.tatumgames.stattool.model.GuardianStats;
+import com.tatumgames.stattool.requests.app.GetGuardiansRQ;
+import com.tatumgames.stattool.requests.app.GetGuardiansRS;
+import com.tatumgames.stattool.requests.app.UpdateGuardianBaseStatsBulkRQ;
+import com.tatumgames.stattool.requests.app.UpdateGuardianBaseStatsBulkRS;
+import com.tatumgames.stattool.requests.model.Data;
+import com.tatumgames.stattool.requests.model.UpdateBaseStats;
+import com.tatumgames.stattool.utils.DialogUtils;
+import com.tatumgames.stattool.utils.ErrorUtils;
+import com.tatumgames.stattool.utils.StatUtils;
 import com.tatumgames.stattool.utils.Utils;
+import com.tatumgames.stattool.utils.network.NetworkReceiver;
+import com.tatumgames.stattool.volley.RequestManager;
+import com.tatumgames.stattool.volley.constants.UrlConstants;
+import com.tatumgames.stattool.volley.listeners.ErrorListener;
+import com.tatumgames.stattool.volley.listeners.GsonObjectListener;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener,
+        NetworkReceiver.NetworkStatusObserver {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int VIBRATE_TIMER = 500; // milliseconds
@@ -65,28 +87,34 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private static final int CLICK_THRESHOLD = 500; // milliseconds
     private static final int MAX_LEVEL_FILTER_VALUE = 20;
     private static final double MULTIPLIER_LEVEL_STATS = 0.05; // percent
-    private static final double[] MULTIPLIER_TIER = {1, 0.9, 0.75, 0.55, 0.4, 0.25}; // arbitrary value
+
     private static final String SELECT_OPTION = "SELECT OPTION";
     private static final String FORWARD_SLASH = "/ ";
 
+    private RequestManager mRequestManager;
+    private NetworkReceiver mNetworkReceiver;
+    private ErrorUtils mErrorUtils;
     private Context mContext;
-    private Stats stats;
+    private GuardianStats stats;
+    private StatUtils statUtils;
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
     private Vibrator v;
     private Spinner spnAffinity, spnType;
     private EditText edtLv, edtAsc;
-    private TextView tvHp, tvStr, tvSpd, tvWis, tvPhyDef, tvMagDef, tvCrit, tvTooltip, tvMaxLv, tvMaxAsc;
+    private TextView tvHp, tvStr, tvSpd, tvWis, tvPhyDef, tvMagDef, tvCrit, tvTooltip, tvMaxLv, tvMaxAsc,
+            tvResetToBase;
     private Button btnRegenerate;
+    private LinearLayout llUpdateWrapper;
 
     private boolean isDefaultSet, isPaused, isEditable, isBaseStatsSet, isAnimationStarted;
-    private String mSelectedAffinity, mSelectedType;
+    private String mSelectedAffinity, mSelectedCardType;
     private String[] arryAffinity, arryType;
-    private Random rand;
     private Timer mTimer;
     private Animation animation;
+    private ArrayList<UpdateGuardianBaseStatsBulkRQ> alUpdateGuardianBaseStatsBulkRQ;
 
-    private int mMaxLv;
+    private int updateGuardianCounter;
     private long mLastClickTime;
 
     @Override
@@ -104,6 +132,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // intialize views and listeners
         initializeViews();
+        initializeHandlers();
         initializeListeners();
     }
 
@@ -112,9 +141,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      */
     private void initializeViews() {
         mContext = MainActivity.this;
-        stats = new Stats();
-        rand = new Random();
+        stats = new GuardianStats();
+        statUtils = new StatUtils();
         mTimer = new Timer();
+        mRequestManager = new RequestManager(this);
+        mNetworkReceiver = new NetworkReceiver();
+        mErrorUtils = new ErrorUtils();
+        alUpdateGuardianBaseStatsBulkRQ = new ArrayList<>();
 
         // initialize vibrator and sensor for device shake detector
         v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -125,6 +158,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         animation = new AlphaAnimation(1.0F, 0.4F);
 
         // initialize views
+        llUpdateWrapper = findViewById(R.id.ll_update_wrapper);
         edtLv = findViewById(R.id.edt_lv);
         edtAsc = findViewById(R.id.edt_asc);
         tvHp = findViewById(R.id.tv_hp);
@@ -137,12 +171,27 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         tvTooltip = findViewById(R.id.tv_tooltip);
         tvMaxLv = findViewById(R.id.tv_max_lv);
         tvMaxAsc = findViewById(R.id.tv_max_asc);
-        TextView tvResetToBase = findViewById(R.id.tv_reset_to_base);
+        tvResetToBase = findViewById(R.id.tv_reset_to_base);
         spnAffinity = findViewById(R.id.spn_affinity);
         spnType = findViewById(R.id.spn_card_type);
         arryAffinity = getResources().getStringArray(R.array.arryAffinity);
         arryType = getResources().getStringArray(R.array.arryCardType);
         btnRegenerate = findViewById(R.id.btn_regenerate);
+
+        // set visibility for update stats based on configuration
+        if (BuildConfig.UPDATE_BASE_STATS) {
+            llUpdateWrapper.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams llParamsA = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f);
+            LinearLayout.LayoutParams llParamsB = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.3f);
+            tvResetToBase.setLayoutParams(llParamsA);
+            llUpdateWrapper.setLayoutParams(llParamsB);
+        } else {
+            llUpdateWrapper.setVisibility(View.GONE);
+            tvResetToBase.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
 
         // set animation attributes
         animation.setDuration(300); // Duration: 300
@@ -161,10 +210,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         // set edtText filters
         edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, MAX_LEVEL_FILTER_VALUE)});
 
-        // set on click listener
-        btnRegenerate.setOnClickListener(this);
-        tvResetToBase.setOnClickListener(this);
-
         // set on item click listener
         spnAffinity.setOnItemSelectedListener(this);
         spnType.setOnItemSelectedListener(this);
@@ -177,6 +222,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
         // set default tooltip
         showRandomTooltip();
+    }
+
+    /**
+     * Method is used to initialize click listeners
+     */
+    private void initializeHandlers() {
+        llUpdateWrapper.setOnClickListener(this);
+        btnRegenerate.setOnClickListener(this);
+        tvResetToBase.setOnClickListener(this);
     }
 
     /**
@@ -200,13 +254,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (Utils.isStringEmpty(String.valueOf(edtAsc.getText()))) {
                     edtAsc.setText("0");
-                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
+                    // max level
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+                    // update edtText filter
+                    edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, MAX_LEVEL_FILTER_VALUE)});
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
-                    if (currLv > mMaxLv) {
+                    if (currLv > stats.getMavLv()) {
                         // adjust max lv
-                        Logger.d(TAG, "adjusting maxLv: " + mMaxLv);
-                        edtLv.setText(String.valueOf(mMaxLv));
+                        Logger.d(TAG, "adjusting maxLv: " + stats.getMavLv());
+                        edtLv.setText(String.valueOf(stats.getMavLv()));
                     }
                 }
                 return false;
@@ -230,13 +287,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 // update max level based on inputted asc
                 if (!Utils.isStringEmpty(String.valueOf(edtAsc.getText())) && isBaseStatsSet &&
                         Integer.parseInt(String.valueOf(edtAsc.getText())) > 0) {
-                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
+                    // max level
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+                    // update edtText filter
+                    edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, stats.getMavLv())});
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
-                    if (currLv > mMaxLv) {
+                    if (currLv > stats.getMavLv()) {
                         // adjust max lv
-                        Logger.d(TAG, "adjusting maxLv: " + mMaxLv);
-                        edtLv.setText(String.valueOf(mMaxLv));
+                        Logger.d(TAG, "adjusting maxLv: " + stats.getMavLv());
+                        edtLv.setText(String.valueOf(stats.getMavLv()));
                     }
                 }
             }
@@ -284,9 +344,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * Method is used to show a randomized tooltip
      */
     private void showRandomTooltip() {
-        if (Utils.isStringEmpty(mSelectedAffinity) || Utils.isStringEmpty(mSelectedType) ||
+        if (Utils.isStringEmpty(mSelectedAffinity) || Utils.isStringEmpty(mSelectedCardType) ||
                 mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) ||
-                mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
+                mSelectedCardType.equalsIgnoreCase(SELECT_OPTION)) {
             if (isDefaultSet) {
                 return;
             }
@@ -298,24 +358,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         } else {
             if (!isAnimationStarted) {
                 // set random tooltip message
-                int rand = this.rand.nextInt(9);
-                if (rand == 0) {
+                Random rand = new Random();
+                int randValue = rand.nextInt(9);
+                if (randValue == 0) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_change_lv_and_asc));
-                } else if (rand == 1) {
+                } else if (randValue == 1) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_reset_stats));
-                } else if (rand == 2) {
+                } else if (randValue == 2) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_stats_increase));
-                } else if (rand == 3) {
+                } else if (randValue == 3) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_asc_increase));
-                } else if (rand == 4) {
+                } else if (randValue == 4) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_physical_defense));
-                } else if (rand == 5) {
+                } else if (randValue == 5) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_magical_defense));
-                } else if (rand == 6) {
+                } else if (randValue == 6) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_strength_attack));
-                } else if (rand == 7) {
+                } else if (randValue == 7) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_wisdom_attack));
-                } else if (rand == 8) {
+                } else if (randValue == 8) {
                     tvTooltip.setText(getResources().getString(R.string.tooltip_critical_attack));
                 }
             }
@@ -360,628 +421,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             mTimer.purge();
             mTimer = null;
         }
-    }
-
-    /**
-     * Method is used to calculate HP base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) hp base: [350-400]
-     * (R) hp base: [400-475]
-     * (E) hp base: [475-550]
-     * (L) hp base: [575-675]
-     * (M) hp base: [700-850]
-     * (SL) hp base: [437-512]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return HP base value
-     */
-    private int randHpStatBase(CardType cardType, Affinity affinity) {
-        int hp = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            hp = rand.nextInt(51) + 350;
-        } else if (cardType.equals(CardType.RARE)) {
-            hp = rand.nextInt(76) + 400;
-        } else if (cardType.equals(CardType.EPIC)) {
-            hp = rand.nextInt(76) + 475;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            hp = rand.nextInt(101) + 575;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            hp = rand.nextInt(151) + 700;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            hp = rand.nextInt(76) + 437;
-        }
-
-        int baseHp = hp + randHpByAffinity(affinity, hp);
-        stats.setHp(baseHp);
-        return baseHp;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * base HP will be, [baseHp = randomized hp + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param hp       Randomized value to be added to create the Base HP stat
-     * @return Value based on affinity
-     */
-    private int randHpByAffinity(Affinity affinity, int hp) {
-        int hpByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[2]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[0]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[3]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[1]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[4]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            hpByAffinity = (int) (hp * MULTIPLIER_TIER[5]);
-        }
-
-        return hpByAffinity;
-    }
-
-    /**
-     * Method is used to calculate Strength base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) str base: [40-45]
-     * (R) str base: [45-55]
-     * (E) str base: [50-60]
-     * (L) str base: [65-80]
-     * (M) str base: [90-110]
-     * (SL) str base: [60-75]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Strength base value
-     */
-    private int randStrStat(CardType cardType, Affinity affinity) {
-        int str = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            str = rand.nextInt(6) + 40;
-        } else if (cardType.equals(CardType.RARE)) {
-            str = rand.nextInt(11) + 45;
-        } else if (cardType.equals(CardType.EPIC)) {
-            str = rand.nextInt(11) + 50;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            str = rand.nextInt(16) + 65;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            str = rand.nextInt(21) + 90;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            str = rand.nextInt(16) + 60;
-        }
-
-        int baseStr = str + randStrByAffinity(affinity, str);
-        stats.setStr(baseStr);
-        return baseStr;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * Strength value will be, [baseStr = randomized str + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param str      Randomized value to be added to create the Base Strength stat
-     * @return Value based on affinity
-     */
-    private int randStrByAffinity(Affinity affinity, int str) {
-        int strByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[0]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[1]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[2]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[3]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[5]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            strByAffinity = (int) (str * MULTIPLIER_TIER[4]);
-        }
-
-        return strByAffinity;
-    }
-
-    /**
-     * Method is used to calculate Speed base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) spd base: [35-40]
-     * (R) spd base: [37-45]
-     * (E) spd base: [42-50]
-     * (L) spd base: [50-60]
-     * (M) spd base: [60-75]
-     * (SL) spd base: [40-48]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Speed base value
-     */
-    private int randSpdStat(CardType cardType, Affinity affinity) {
-        int spd = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            spd = rand.nextInt(6) + 35;
-        } else if (cardType.equals(CardType.RARE)) {
-            spd = rand.nextInt(9) + 37;
-        } else if (cardType.equals(CardType.EPIC)) {
-            spd = rand.nextInt(9) + 42;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            spd = rand.nextInt(11) + 50;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            spd = rand.nextInt(16) + 60;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            spd = rand.nextInt(9) + 40;
-        }
-
-        int baseSpd = spd + randSpdByAffinity(affinity, spd);
-        stats.setSpd(baseSpd);
-        return baseSpd;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * Speed value will be, [baseSpd = randomized spd + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param spd      Randomized value to be added to create the Base Speed stat
-     * @return Value based on affinity
-     */
-    private int randSpdByAffinity(Affinity affinity, int spd) {
-        int spdByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[5]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[4]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[0]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[4]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[1]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            spdByAffinity = (int) (spd * MULTIPLIER_TIER[3]);
-        }
-
-        return spdByAffinity;
-    }
-
-    /**
-     * Method is used to calculate Wisdom base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) wis base: [40-45]
-     * (R) wis base: [45-55]
-     * (E) wis base: [50-60]
-     * (L) wis base: [65-80]
-     * (M) wis base: [90-110]
-     * (SL) wis base: [60-75]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Wisdom base value
-     */
-    private int randWisStat(CardType cardType, Affinity affinity) {
-        int wis = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            wis = rand.nextInt(6) + 40;
-        } else if (cardType.equals(CardType.RARE)) {
-            wis = rand.nextInt(11) + 45;
-        } else if (cardType.equals(CardType.EPIC)) {
-            wis = rand.nextInt(11) + 50;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            wis = rand.nextInt(16) + 65;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            wis = rand.nextInt(21) + 90;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            wis = rand.nextInt(16) + 60;
-        }
-
-        int baseWis = wis + randWisByAffinity(affinity, wis);
-        stats.setWis(baseWis);
-        return baseWis;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * Wisdom value will be, [baseWis = randomized wis + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param wis      Randomized value to be added to create the Base Wisdom stat
-     * @return Value based on affinity
-     */
-    private int randWisByAffinity(Affinity affinity, int wis) {
-        int wisByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[4]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[5]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[5]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            wisByAffinity = (int) (wis * MULTIPLIER_TIER[0]);
-        }
-
-        return wisByAffinity;
-    }
-
-    /**
-     * Method is used to calculate Physical Defense base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) phyDef base: [35-40]
-     * (R) phyDef base: [37-45]
-     * (E) phyDef base: [42-50]
-     * (L) phyDef base: [50-60]
-     * (M) phyDef base: [60-75]
-     * (SL) phyDef base: [40-48]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Physical Defense base value
-     */
-    private int randPhyDefStat(CardType cardType, Affinity affinity) {
-        int phyDef = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            phyDef = rand.nextInt(6) + 35;
-        } else if (cardType.equals(CardType.RARE)) {
-            phyDef = rand.nextInt(9) + 37;
-        } else if (cardType.equals(CardType.EPIC)) {
-            phyDef = rand.nextInt(9) + 42;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            phyDef = rand.nextInt(11) + 50;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            phyDef = rand.nextInt(16) + 60;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            phyDef = rand.nextInt(9) + 40;
-        }
-
-        int basePhyDef = phyDef + randPhyDefByAffinity(affinity, phyDef);
-        stats.setPhyDef(basePhyDef);
-        return basePhyDef;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * Physical Defense value will be, [basePhyDef = randomized phyDef + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param phyDef   Randomized value to be added to create the Base Physical Defense stat
-     * @return Value based on affinity
-     */
-    private int randPhyDefByAffinity(Affinity affinity, int phyDef) {
-        int phyDefByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[3]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[4]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[2]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            phyDefByAffinity = (int) (phyDef * MULTIPLIER_TIER[1]);
-        }
-
-        return phyDefByAffinity;
-    }
-
-    /**
-     * Method is used to calculate Magical Defense base stat using cardType and affinity to generate
-     * a randomized value
-     *
-     * <p>
-     * (C) magDef base: [35-40]
-     * (R) magDef base: [37-45]
-     * (E) magDef base: [42-50]
-     * (L) magDef base: [50-60]
-     * (M) magDef base: [60-75]
-     * (SL) magDef base: [40-48]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Magical Defense base value
-     */
-    private int randMagDefStat(CardType cardType, Affinity affinity) {
-        int magDef = 0;
-
-        if (cardType.equals(CardType.COMMON)) {
-            magDef = rand.nextInt(6) + 35;
-        } else if (cardType.equals(CardType.RARE)) {
-            magDef = rand.nextInt(9) + 37;
-        } else if (cardType.equals(CardType.EPIC)) {
-            magDef = rand.nextInt(9) + 42;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            magDef = rand.nextInt(11) + 50;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            magDef = rand.nextInt(16) + 60;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            magDef = rand.nextInt(9) + 40;
-        }
-
-        int baseMagDef = magDef + randMagDefByAffinity(affinity, magDef);
-        stats.setMagDef(baseMagDef);
-        return baseMagDef;
-    }
-
-    /**
-     * Method is used to return back a value based on affinity. This contributes to what the final
-     * Magical Defense value will be, [baseMagDef = randomized magDef + value based on affinity]
-     *
-     * <p>
-     * multiplier: 1, 0.9, 0.75, 0.55, 0.4, 0.25
-     * Robotic stat order: Str, MagDef, HP, PhyDef, Wisdom, Speed
-     * Physical stat order: HP, Str, PhyDef, MagDef, Speed, Wisdom
-     * Beast stat order: Speed, MagDef, Str, HP, PhyDef, Wisdom
-     * Elemental stat order: Wisdom, HP, PhyDef, Str, Speed, MagDef
-     * Psychic stat order: Wisdom, Speed, PhyDef, MagDef, HP, Str
-     * Brainiac stat order: Wisdom, PhyDef, MagDef, Speed, Str, HP
-     * </p>
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @param magDef   Randomized value to be added to create the Base Magical Defense stat
-     * @return Value based on affinity
-     */
-    private int randMagDefByAffinity(Affinity affinity, int magDef) {
-        int magDefByAffinity = 0;
-
-        if (affinity.equals(Affinity.ROBOTIC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[1]);
-        } else if (affinity.equals(Affinity.PHYSICAL)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[3]);
-        } else if (affinity.equals(Affinity.BEAST)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[1]);
-        } else if (affinity.equals(Affinity.ELEMENTAL)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[5]);
-        } else if (affinity.equals(Affinity.PSYCHIC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[3]);
-        } else if (affinity.equals(Affinity.BRAINIAC)) {
-            magDefByAffinity = (int) (magDef * MULTIPLIER_TIER[2]);
-        }
-
-        return magDefByAffinity;
-    }
-
-    /**
-     * Method is used to calculate chance to perform critical attack. Note that crit percentage
-     * is not affinity linked
-     *
-     * <p>
-     * (C) critPerc base: [2]
-     * (R) critPerc base: [4]
-     * (E) critPerc base: [6]
-     * (L) critPerc base: [8]
-     * (M) critPerc base: [10]
-     * (SL) critPerc base: [5]
-     * </p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @return Percentage represented value to perform critical attack
-     */
-    private int randCritPercStat(CardType cardType) {
-        if (cardType.equals(CardType.COMMON)) {
-            stats.setCrit(2);
-            return 2;
-        } else if (cardType.equals(CardType.RARE)) {
-            stats.setCrit(4);
-            return 4;
-        } else if (cardType.equals(CardType.EPIC)) {
-            stats.setCrit(6);
-            return 6;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            stats.setCrit(8);
-            return 8;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            stats.setCrit(10);
-            return 10;
-        }
-        // SQUAD_LEADER return value
-        stats.setCrit(5);
-        return 5;
-    }
-
-    /**
-     * Retrieve base max level
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @param currAsc  The maximum level of a Guardian increases based on the Ascension (Asc) level
-     * @return Maximum level based on cardType
-     */
-    private int getMaxLv(CardType cardType, int currAsc) {
-        mMaxLv = 0;
-        int ascIncValue = currAsc * 2;
-
-        if (cardType.equals(CardType.COMMON)) {
-            mMaxLv = 20 + ascIncValue;
-        } else if (cardType.equals(CardType.RARE)) {
-            mMaxLv = 24 + ascIncValue;
-        } else if (cardType.equals(CardType.EPIC)) {
-            mMaxLv = 28 + ascIncValue;
-        } else if (cardType.equals(CardType.LEGENDARY)) {
-            mMaxLv = 32 + ascIncValue;
-        } else if (cardType.equals(CardType.MYTHIC)) {
-            mMaxLv = 36 + ascIncValue;
-        } else if (cardType.equals(CardType.SQUAD_LEADER)) {
-            mMaxLv = 34;
-        }
-
-        // update edtText filter
-        edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, mMaxLv)});
-        return mMaxLv;
-    }
-
-    /**
-     * Retrieve maximum ascension level
-     * <p>Squad Leader return 0 ascension by default</p>
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @return Maximum ascension level based on cardType
-     */
-    private int getMaxAsc(CardType cardType) {
-        // SQUAD_LEADER max ascension
-        int maxAsc = 0;
-
-        if (cardType.equals(CardType.COMMON) ||
-                cardType.equals(CardType.RARE) ||
-                cardType.equals(CardType.EPIC)) {
-            maxAsc = 3;
-        } else if (cardType.equals(CardType.LEGENDARY) ||
-                cardType.equals(CardType.MYTHIC)) {
-            maxAsc = 4;
-        }
-
-        // update edtText filter
-        edtAsc.setFilters(new InputFilter[]{new InputFilterMinMax(0, maxAsc)});
-        return maxAsc;
-    }
-
-    /**
-     * Helper method to convert String affinity to Affinity object
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Object containing Affinity information
-     */
-    private Affinity getAffinity(String affinity) {
-        if (affinity.equalsIgnoreCase(String.valueOf(Affinity.ROBOTIC))) {
-            stats.setAffinity(Affinity.ROBOTIC);
-            return Affinity.ROBOTIC;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Affinity.PHYSICAL))) {
-            stats.setAffinity(Affinity.PHYSICAL);
-            return Affinity.PHYSICAL;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Affinity.BEAST))) {
-            stats.setAffinity(Affinity.BEAST);
-            return Affinity.BEAST;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Affinity.ELEMENTAL))) {
-            stats.setAffinity(Affinity.ELEMENTAL);
-            return Affinity.ELEMENTAL;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Affinity.PSYCHIC))) {
-            stats.setAffinity(Affinity.PSYCHIC);
-            return Affinity.PSYCHIC;
-        }
-        stats.setAffinity(Affinity.BRAINIAC);
-        return Affinity.BRAINIAC;
-    }
-
-    /**
-     * Helper method to convert String cardType to CardType object
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @return Object containing cardType information
-     */
-    private CardType getCardType(String cardType) {
-        if (cardType.equalsIgnoreCase(String.valueOf(CardType.COMMON))) {
-            stats.setCardType(CardType.COMMON);
-            return CardType.COMMON;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(CardType.RARE))) {
-            stats.setCardType(CardType.RARE);
-            return CardType.RARE;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(CardType.EPIC))) {
-            stats.setCardType(CardType.EPIC);
-            return CardType.EPIC;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(CardType.LEGENDARY))) {
-            stats.setCardType(CardType.LEGENDARY);
-            return CardType.LEGENDARY;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(CardType.MYTHIC))) {
-            stats.setCardType(CardType.MYTHIC);
-            return CardType.MYTHIC;
-        }
-        stats.setCardType(CardType.SQUAD_LEADER);
-        return CardType.SQUAD_LEADER;
     }
 
     /**
@@ -1032,13 +471,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * before edits and adjustments were made
      */
     private void resetToBaseStats() {
-        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedType) &&
+        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedCardType) &&
                 !mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) &&
-                !mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
+                !mSelectedCardType.equalsIgnoreCase(SELECT_OPTION)) {
             edtLv.setText("1");
             edtAsc.setText("0");
-            tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(stats.getCardType(), 0))));
-            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(stats.getCardType()))));
+            tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
             tvHp.setText(String.valueOf(stats.getHp()));
             tvStr.setText(String.valueOf(stats.getStr()));
             tvSpd.setText(String.valueOf(stats.getSpd()));
@@ -1106,7 +545,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 setStats();
                 break;
             case R.id.tv_reset_to_base:
+                // reset to base stats
                 resetToBaseStats();
+                break;
+            case R.id.ll_update_wrapper:
+                // getGuardians request
+                getGuardians();
                 break;
             default:
                 break;
@@ -1140,7 +584,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 break;
             case R.id.spn_card_type:
                 // start animation to prompt user that stats will not regenerate automatically
-                if (!Utils.isStringEmpty(mSelectedType)) {
+                if (!Utils.isStringEmpty(mSelectedCardType)) {
                     if (!isAnimationStarted && isBaseStatsSet) {
                         isAnimationStarted = true;
                         btnRegenerate.startAnimation(animation);
@@ -1150,10 +594,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 }
 
                 // set selected type
-                mSelectedType = arryType[position];
+                mSelectedCardType = arryType[position];
 
                 // disable ascension editText field if Squad Leader is selected
-                if (mSelectedType.equalsIgnoreCase(arryType[arryType.length - 1])) {
+                if (mSelectedCardType.equalsIgnoreCase(arryType[arryType.length - 1])) {
                     toggleEditTextAsc(false);
                 } else {
                     toggleEditTextAsc(true);
@@ -1179,8 +623,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      */
     private void toggleEditTextAsc(boolean isEnabled) {
         if (!Utils.checkIfNull(stats) && !Utils.checkIfNull(stats.getCardType()) &&
-                !mSelectedType.equalsIgnoreCase(arryType[0])) {
-            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
+                !mSelectedCardType.equalsIgnoreCase(arryType[0])) {
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
         }
 
         if (isEnabled) {
@@ -1203,9 +647,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * Method is used to set stats
      */
     private void setStats() {
-        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedType) &&
+        if (!Utils.isStringEmpty(mSelectedAffinity) && !Utils.isStringEmpty(mSelectedCardType) &&
                 !mSelectedAffinity.equalsIgnoreCase(SELECT_OPTION) &&
-                !mSelectedType.equalsIgnoreCase(SELECT_OPTION)) {
+                !mSelectedCardType.equalsIgnoreCase(SELECT_OPTION)) {
 
             if (!isEditable) {
                 // set editText action enabled
@@ -1230,15 +674,20 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             if (!isBaseStatsSet) {
                 Logger.d(TAG, "setting base stats");
                 // generate stats and set textView
-                tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(getMaxLv(getCardType(mSelectedType), Integer.parseInt(String.valueOf(edtAsc.getText()))))));
-                tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
-                tvHp.setText(String.valueOf(randHpStatBase(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvStr.setText(String.valueOf(randStrStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvSpd.setText(String.valueOf(randSpdStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvWis.setText(String.valueOf(randWisStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvPhyDef.setText(String.valueOf(randPhyDefStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvMagDef.setText(String.valueOf(randMagDefStat(getCardType(mSelectedType), getAffinity(mSelectedAffinity))));
-                tvCrit.setText(String.valueOf(randCritPercStat(getCardType(mSelectedType))));
+                stats = statUtils.getStats(
+                        statUtils.getCardType(mSelectedCardType),
+                        statUtils.getAffinity(mSelectedAffinity),
+                        Integer.parseInt(String.valueOf(edtAsc.getText())));
+
+                tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+                tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
+                tvHp.setText(String.valueOf(stats.getHp()));
+                tvStr.setText(String.valueOf(stats.getStr()));
+                tvSpd.setText(String.valueOf(stats.getSpd()));
+                tvWis.setText(String.valueOf(stats.getWis()));
+                tvPhyDef.setText(String.valueOf(stats.getPhyDef()));
+                tvMagDef.setText(String.valueOf(stats.getMagDef()));
+                tvCrit.setText(String.valueOf(stats.getCrit()));
 
                 // base stats are now set
                 isBaseStatsSet = true;
@@ -1256,7 +705,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         double multiplierStats = (level - 1) * MULTIPLIER_LEVEL_STATS;
 
                         // update asc
-                        tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(getMaxAsc(getCardType(mSelectedType)))));
+                        tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
 
                         // update hp
                         int hp = stats.getHp();
@@ -1299,7 +748,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      */
     private void printStats() {
         Logger.i(TAG, "affinity: " + mSelectedAffinity);
-        Logger.i(TAG, "card type: " + mSelectedType);
+        Logger.i(TAG, "card type: " + mSelectedCardType);
         Logger.i(TAG, "level: " + edtLv.getText());
         Logger.i(TAG, "asc: " + edtAsc.getText());
         Logger.i(TAG, "hp: " + tvHp.getText());
@@ -1312,12 +761,176 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         Logger.i(TAG, "---------------------------------------------");
     }
 
+    /**
+     * Method is used to make getGuardians request
+     */
+    private void getGuardians() {
+        // show progress dialog
+        DialogUtils.showProgressDialog(mContext);
+
+        ErrorListener errorListener = new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError googleError, int resultCode) {
+                // do nothing
+            }
+
+            @Override
+            public void onErrorResponse(@NonNull VolleyError volleyError) {
+                volleyError.printStackTrace();
+                // dismiss loading dialog
+                DialogUtils.dismissProgressDialog();
+                // display error dialog
+                mErrorUtils.showError(MainActivity.this, getResources().getString(R.string.default_error_message));
+            }
+        };
+        GsonObjectListener<GetGuardiansRS> listener = new GsonObjectListener<>(new GsonObjectListener.OnResponse<GetGuardiansRS>() {
+            @Override
+            public void onResponse(GetGuardiansRS response) {
+                if (!Utils.checkIfNull(response) && !Utils.checkIfNull(response.data)) {
+                    populateUpdateGuardianStatsList(response.data);
+                } else {
+                    // dismiss loading dialog
+                    DialogUtils.dismissProgressDialog();
+                }
+            }
+        }, errorListener, GetGuardiansRS.class);
+        mRequestManager.createGetRequest(new GetGuardiansRQ(), listener, errorListener,
+                UrlConstants.HV_GET_GUARDIANS_URL_CREATE);
+    }
+
+    /**
+     * Method is used to populate list of requests for updating Guardian stats
+     *
+     * @param data List of Guardian data
+     */
+    private void populateUpdateGuardianStatsList(ArrayList<Data> data) {
+        ArrayList<UpdateBaseStats> alUpdateBaseStats = new ArrayList<>();
+
+        for (int i = 0; i < data.size(); i++) {
+            // generate stats
+            GuardianStats guardianStats = statUtils.getStats(
+                    statUtils.getCardType(i < 6 ? "SQUAD_LEADER" : "COMMON"),
+                    statUtils.getAffinity("ROBOTIC"),
+                    0);
+
+            for (int n = 0; n < data.get(i).stats.size(); n++) {
+                // update stats with generated stats
+                UpdateBaseStats updateBaseStats = new UpdateBaseStats();
+                updateBaseStats.id = Integer.parseInt(data.get(i).stats.get(n).id);
+                updateBaseStats.statId = Integer.parseInt(data.get(i).stats.get(n).statId);
+                if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.HEALTH.toString())) {
+                    // represents HP
+                    updateBaseStats.statValue = guardianStats.getHp();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.SPEED.toString())) {
+                    // represents Speed
+                    updateBaseStats.statValue = guardianStats.getSpd();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.STRENGTH.toString())) {
+                    // represents Strength
+                    updateBaseStats.statValue = guardianStats.getStr();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.WISDOM.toString())) {
+                    // represents Wisdom
+                    updateBaseStats.statValue = guardianStats.getSpd();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.PHYSICAL_RESISTANCE.toString())) {
+                    // represents Physical Resistance
+                    updateBaseStats.statValue = guardianStats.getPhyDef();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.MAGICAL_RESISTANCE.toString())) {
+                    // represents Magical Resistance
+                    updateBaseStats.statValue = guardianStats.getMagDef();
+                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.CRITICAL_PERCENT.toString())) {
+                    // represents Critical Percent
+                    updateBaseStats.statValue = guardianStats.getCrit();
+                }
+                // 0 is false, 1 is true
+                updateBaseStats.active = 1;
+                updateBaseStats.archived = 0;
+                updateBaseStats.deleted = 0;
+                // add updated stat
+                alUpdateBaseStats.add(updateBaseStats);
+
+                if (n == (data.get(i).stats.size() - 1)) {
+                    // add formed request for updateBaseStats(bulk)
+                    UpdateGuardianBaseStatsBulkRQ updateGuardianBaseStatsBulkRQ = new UpdateGuardianBaseStatsBulkRQ();
+                    updateGuardianBaseStatsBulkRQ.guardianId = Integer.parseInt(data.get(i).id);
+                    updateGuardianBaseStatsBulkRQ.stats = alUpdateBaseStats;
+                    alUpdateGuardianBaseStatsBulkRQ.add(updateGuardianBaseStatsBulkRQ);
+                    // clear list
+                    alUpdateBaseStats.clear();
+                }
+            }
+        }
+
+        // make updateGuardianStats(bulk) request
+        updateGuardianStats();
+    }
+
+    /**
+     * Method is used to make updateGuardianStats(bulk) requests
+     */
+    private void updateGuardianStats() {
+        if (updateGuardianCounter == 0) {
+            // show progress dialog
+            DialogUtils.showProgressDialog(mContext);
+        }
+
+        ErrorListener errorListener = new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError googleError, int resultCode) {
+                // do nothing
+            }
+
+            @Override
+            public void onErrorResponse(@NonNull VolleyError volleyError) {
+                volleyError.printStackTrace();
+                // dismiss loading dialog
+                DialogUtils.dismissProgressDialog();
+                // display error dialog
+                mErrorUtils.showError(MainActivity.this, getResources().getString(R.string.default_error_message));
+            }
+        };
+        GsonObjectListener<UpdateGuardianBaseStatsBulkRS> listener = new GsonObjectListener<>(new GsonObjectListener.OnResponse<UpdateGuardianBaseStatsBulkRS>() {
+            @Override
+            public void onResponse(UpdateGuardianBaseStatsBulkRS response) {
+                // increase counter
+                updateGuardianCounter++;
+
+                if (updateGuardianCounter < alUpdateGuardianBaseStatsBulkRQ.size()) {
+                    // recursively call updateGuardianStats() with short delay
+                    updateGuardianStats();
+                } else {
+                    // reset
+                    updateGuardianCounter = 0;
+                    alUpdateGuardianBaseStatsBulkRQ.clear();
+                    // dismiss loading dialog
+                    DialogUtils.dismissProgressDialog();
+                    // successful TCoin purchase
+                    DialogUtils.showDefaultOKAlert(MainActivity.this, getResources().getString(R.string.successful_update_stats_title),
+                            getResources().getString(R.string.successful_update_stats_message));
+                }
+            }
+        }, errorListener, UpdateGuardianBaseStatsBulkRS.class);
+        mRequestManager.createPostRequest(alUpdateGuardianBaseStatsBulkRQ.get(updateGuardianCounter),
+                listener, errorListener, UrlConstants.HV_UPDATE_BASE_STATS_BULK_URL_CREATE);
+
+    }
+
     @Override
     protected void onPause() {
         // unregisters a listener for all sensors
         mSensorManager.unregisterListener(mSensorListener);
         // set flag
         isPaused = true;
+
+        // remove network observer
+        if (!Utils.checkIfNull(mNetworkReceiver) &&
+                mNetworkReceiver.getObserverSize() > 0 && mNetworkReceiver.contains(this)) {
+            try {
+                // unregister network receiver
+                unregisterReceiver(mNetworkReceiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+            mNetworkReceiver.removeObserver(this);
+        }
         super.onPause();
     }
 
@@ -1330,12 +943,45 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);
+
+        // only register receiver if it has not already been registered
+        if (!Utils.checkIfNull(mNetworkReceiver) && !mNetworkReceiver.contains(this)) {
+            // register network receiver
+            mNetworkReceiver.addObserver(this);
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            // print observer list
+            mNetworkReceiver.printObserverList();
+        }
     }
 
     @Override
     protected void onDestroy() {
         // stop tooltip timer
         stopTooltipTimer();
+
+        // remove network observer
+        if (!Utils.checkIfNull(mNetworkReceiver) &&
+                mNetworkReceiver.getObserverSize() > 0 && mNetworkReceiver.contains(this)) {
+            try {
+                // unregister network receiver
+                unregisterReceiver(mNetworkReceiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+            mNetworkReceiver.removeObserver(this);
+        }
         super.onDestroy();
+    }
+
+    @Override
+    public void notifyConnectionChange(boolean isConnected) {
+        if (isConnected) {
+            // app is connected to network
+            DialogUtils.dismissNoNetworkDialog();
+        } else {
+            // app is not connected to network
+            DialogUtils.showDefaultNoNetworkAlert(this, null,
+                    this.getResources().getString(R.string.check_network));
+        }
     }
 }

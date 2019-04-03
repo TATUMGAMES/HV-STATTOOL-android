@@ -24,8 +24,8 @@ public class Utils {
     /**
      * Method checks if String value is empty
      *
-     * @param str
-     * @return string
+     * @param str String value to be checked if null
+     * @return string True if string is empty, otherwise false
      */
     public static boolean isStringEmpty(String str) {
         return str == null || str.length() == 0 || EMPTY.equals(str.trim()) || NULL.equals(str);
@@ -34,8 +34,8 @@ public class Utils {
     /**
      * Method is used to check if objects are null
      *
-     * @param objectToCheck
-     * @param <T>
+     * @param objectToCheck Generic object to be checked if null
+     * @param <T>           Generics
      * @return true if objectToCheck is null
      */
     public static <T> boolean checkIfNull(T objectToCheck) {
@@ -45,8 +45,8 @@ public class Utils {
     /**
      * Method is used to get color by id
      *
-     * @param context
-     * @param id
+     * @param context Interface to global information about an application environment
+     * @param id      Resource id
      * @return
      */
     public static final int getColor(Context context, int id) {
@@ -60,8 +60,8 @@ public class Utils {
     /**
      * Method is used to get drawable by id
      *
-     * @param context
-     * @param id
+     * @param context Interface to global information about an application environment
+     * @param id      Resource id
      * @return
      */
     public static final Drawable getDrawable(Context context, int id) {
@@ -122,8 +122,10 @@ public class Utils {
     /**
      * Method is used to show virtual keyboard
      *
-     * @param context
-     * @param binder
+     * @param context Interface to global information about an application environment
+     * @param binder  Base interface for a remotable object, the core part of a lightweight
+     *                remote procedure call mechanism designed for high performance when
+     *                performing in-process and cross-process calls
      */
     public static void showKeyboard(Context context, IBinder binder) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -133,8 +135,10 @@ public class Utils {
     /**
      * Method is used to hide virtual keyboard
      *
-     * @param context
-     * @param binder
+     * @param context Interface to global information about an application environment
+     * @param binder  Base interface for a remotable object, the core part of a lightweight
+     *                remote procedure call mechanism designed for high performance when
+     *                performing in-process and cross-process calls
      */
     public static void hideKeyboard(Context context, IBinder binder) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

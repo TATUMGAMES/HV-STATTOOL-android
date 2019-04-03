@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_error_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/scaling_70"
+    android:background="@color/material_red_500_color_code"
+    android:padding="@dimen/scaling_10">
+
+    <!-- error close button -->
+    <ImageView
+        android:id="@+id/iv_error_close"
+        android:layout_width="@dimen/scaling_25"
+        android:layout_height="@dimen/scaling_25"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/close_white" />
+
+    <!-- error message -->
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/scaling_5"
+        android:layout_marginEnd="@dimen/scaling_5"
+        android:layout_toRightOf="@+id/iv_error_close"
+        android:layout_toEndOf="@+id/iv_error_close"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_16" />
+
+</RelativeLayout>

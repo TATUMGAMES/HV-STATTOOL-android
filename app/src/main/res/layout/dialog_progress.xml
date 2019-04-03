@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!-- progress dialog; size can be dynamically defined -->
+    <ProgressBar
+        android:layout_width="@dimen/scaling_50"
+        android:layout_height="@dimen/scaling_50" />
+
+</LinearLayout>

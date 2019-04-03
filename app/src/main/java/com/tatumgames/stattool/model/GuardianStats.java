@@ -1,12 +1,12 @@
 /**
  * Copyright 2013-present Tatum Games, LLC.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,44 +16,41 @@
 
 package com.tatumgames.stattool.model;
 
-import com.tatumgames.stattool.enums.Affinity;
-import com.tatumgames.stattool.enums.CardType;
+import com.tatumgames.stattool.enums.Enum;
 
 /**
  * Model class for Guardian statistics
  * Created by Tatum on 7/22/2015.
  */
-public class Stats {
+public class GuardianStats {
 
-    private Affinity mAffinity;
-    private CardType mCardType;
-    private int mHp;
-    private int mStr;
-    private int mSpd;
-    private int mWis;
-    private int mPhyDef;
-    private int mMagDef;
-    private int mCrit;
+    private Enum.Affinity mAffinity;
+    private Enum.CardType mCardType;
+    private int mHp, mStr, mSpd, mWis, mPhyDef, mMagDef, mCrit, mMavLv, mMaxAsc;
 
     /**
      * Set affinity
-     * @param affinity
+     *
+     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
+     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
      */
-    public void setAffinity(Affinity affinity) {
+    public void setAffinity(Enum.Affinity affinity) {
         mAffinity = affinity;
     }
 
     /**
      * Set card type
-     * @param cardType
+     *
+     * @param cardType This represents the strength and rarity of the card or Guardian
      */
-    public void setCardType(CardType cardType) {
+    public void setCardType(Enum.CardType cardType) {
         mCardType = cardType;
     }
 
     /**
      * set health power
-     * @param hp
+     *
+     * @param hp Randomized value to be added to create the Base HP stat
      */
     public void setHp(int hp) {
         mHp = hp;
@@ -61,7 +58,8 @@ public class Stats {
 
     /**
      * set strength
-     * @param str
+     *
+     * @param str Randomized value to be added to create the Base Strength stat
      */
     public void setStr(int str) {
         mStr = str;
@@ -69,7 +67,8 @@ public class Stats {
 
     /**
      * set speed
-     * @param spd
+     *
+     * @param spd Randomized value to be added to create the Base Speed stat
      */
     public void setSpd(int spd) {
         mSpd = spd;
@@ -77,7 +76,8 @@ public class Stats {
 
     /**
      * set wisdom
-     * @param wis
+     *
+     * @param wis Randomized value to be added to create the Base Wisdom stat
      */
     public void setWis(int wis) {
         mWis = wis;
@@ -85,7 +85,8 @@ public class Stats {
 
     /**
      * set physical defense
-     * @param phyDef
+     *
+     * @param phyDef Randomized value to be added to create the Base Physical Defense stat
      */
     public void setPhyDef(int phyDef) {
         mPhyDef = phyDef;
@@ -93,7 +94,8 @@ public class Stats {
 
     /**
      * set magical def
-     * @param magDef
+     *
+     * @param magDef Randomized value to be added to create the Base Magical Defense stat
      */
     public void setMagDef(int magDef) {
         mMagDef = magDef;
@@ -101,31 +103,53 @@ public class Stats {
 
     /**
      * set critical percent
-     * @param crit
+     *
+     * @param crit Randomized value to be added to create the Base Critical Percentage stat
      */
     public void setCrit(int crit) {
         mCrit = crit;
     }
 
     /**
-     * retrieve affinity
-     * @return
+     * Setter for setting maximum level
+     *
+     * @param mavLv Maximum level
      */
-    public Affinity getAffinity() {
+    public void setMaxLv(int mavLv) {
+        mMavLv = mavLv;
+    }
+
+    /**
+     * Setter for setting maximum ascension
+     *
+     * @param maxAsc Maximum ascension
+     */
+    public void setMaxAsc(int maxAsc) {
+        mMaxAsc = maxAsc;
+    }
+
+    /**
+     * retrieve affinity
+     *
+     * @return Affinity value
+     */
+    public Enum.Affinity getAffinity() {
         return mAffinity;
     }
 
     /**
      * retrieve card type
-     * @return
+     *
+     * @return Card type value
      */
-    public CardType getCardType() {
+    public Enum.CardType getCardType() {
         return mCardType;
     }
 
     /**
      * retrieve health power
-     * @return
+     *
+     * @return Health power value
      */
     public int getHp() {
         return mHp;
@@ -133,7 +157,8 @@ public class Stats {
 
     /**
      * retrieve strength
-     * @return
+     *
+     * @return Strength value
      */
     public int getStr() {
         return mStr;
@@ -141,7 +166,8 @@ public class Stats {
 
     /**
      * retrieve speed
-     * @return
+     *
+     * @return Speed value
      */
     public int getSpd() {
         return mSpd;
@@ -149,7 +175,8 @@ public class Stats {
 
     /**
      * retrieve wisdom
-     * @return
+     *
+     * @return Wisdom value
      */
     public int getWis() {
         return mWis;
@@ -157,7 +184,8 @@ public class Stats {
 
     /**
      * retrieve physical defense
-     * @return
+     *
+     * @return Physical defense value
      */
     public int getPhyDef() {
         return mPhyDef;
@@ -165,7 +193,8 @@ public class Stats {
 
     /**
      * retrieve magical defense
-     * @return
+     *
+     * @return Magical defense value
      */
     public int getMagDef() {
         return mMagDef;
@@ -173,12 +202,34 @@ public class Stats {
 
     /**
      * retrieve critical percent
-     * @return
+     *
+     * @return Critical percent value
      */
     public int getCrit() {
         return mCrit;
     }
 
+    /**
+     * Retrieve maximum possible level
+     *
+     * @return Maximum possible level
+     */
+    public int getMavLv() {
+        return mMavLv;
+    }
+
+    /**
+     * Retrieve maximum possible ascension
+     *
+     * @return Maximum possible ascension
+     */
+    public int getMaxAsc() {
+        return mMaxAsc;
+    }
+
+    /**
+     * Method is used to reset all stat attributes
+     */
     public void reset() {
         mHp = 0;
         mStr = 0;

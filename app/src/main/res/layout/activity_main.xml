@@ -1,8 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/material_grey_300_color_code"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="ContentDescription">
 
     <ImageView
         android:layout_width="match_parent"
@@ -129,8 +131,8 @@
                     android:id="@+id/tv_max_lv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="@string/num"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -168,8 +170,8 @@
                     android:id="@+id/tv_max_asc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="@string/num"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -193,8 +195,8 @@
                     android:id="@+id/tv_hp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -227,8 +229,8 @@
                     android:id="@+id/tv_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -252,8 +254,8 @@
                     android:id="@+id/tv_spd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -277,8 +279,8 @@
                     android:id="@+id/tv_wis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -311,8 +313,8 @@
                     android:id="@+id/tv_phy_def"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -336,8 +338,8 @@
                     android:id="@+id/tv_mag_def"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -361,8 +363,8 @@
                     android:id="@+id/tv_crit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/scaling_4"
                     android:layout_marginStart="@dimen/scaling_4"
+                    android:layout_marginLeft="@dimen/scaling_4"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_18" />
@@ -376,16 +378,55 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_reset_to_base"
+        <LinearLayout
+            android:id="@+id/ll_reset_update_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:padding="@dimen/scaling_10"
-            android:text="@string/reset"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_size_20" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
+            <TextView
+                android:id="@+id/tv_reset_to_base"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.7"
+                android:padding="@dimen/scaling_10"
+                android:text="@string/reset"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_20"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_update_wrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="@dimen/scaling_20"
+                    android:layout_height="@dimen/scaling_20"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/up_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_update_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="@dimen/scaling_10"
+                    android:text="@string/update"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size_20" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- regenerate stats button -->
         <Button
             android:id="@+id/btn_regenerate"
             android:layout_width="match_parent"

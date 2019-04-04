@@ -804,9 +804,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * @param data List of Guardian data
      */
     private void populateUpdateGuardianStatsList(ArrayList<Data> data) {
-        ArrayList<UpdateBaseStats> alUpdateBaseStats = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
+            ArrayList<UpdateBaseStats> alUpdateBaseStats = new ArrayList<>();
             // generate stats
             GuardianStats guardianStats = statUtils.getStats(
                     statUtils.getCardType(i < 6 ? "SQUAD_LEADER" : "COMMON"),
@@ -853,14 +853,52 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                     updateGuardianBaseStatsBulkRQ.guardianId = Integer.parseInt(data.get(i).id);
                     updateGuardianBaseStatsBulkRQ.stats = alUpdateBaseStats;
                     alUpdateGuardianBaseStatsBulkRQ.add(updateGuardianBaseStatsBulkRQ);
-                    // clear list
-                    alUpdateBaseStats.clear();
                 }
             }
         }
 
+        // print formed request for updateGuardianBaseStats
+        printUpdateGuardianBaseStatsRQ();
+
         // make updateGuardianStats(bulk) request
         updateGuardianStats();
+    }
+
+    /**
+     * Method is used to print out all the update Guardian base stat requests
+     */
+    private void printUpdateGuardianBaseStatsRQ() {
+        for (int i = 0; i < alUpdateGuardianBaseStatsBulkRQ.size(); i++) {
+            Logger.i(TAG, "---------------------------------------------");
+            // print GuardianId
+            Logger.i(TAG, "guardianId: " + alUpdateGuardianBaseStatsBulkRQ.get(i).guardianId);
+            for (int n = 0; n < alUpdateGuardianBaseStatsBulkRQ.get(i).stats.size(); n++) {
+                // print Id (primary key)
+                Logger.i(TAG, "id: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).id);
+                if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 1) {
+                    // print HP
+                    Logger.i(TAG, "hp: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 2) {
+                    // print Speed
+                    Logger.i(TAG, "spd: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 3) {
+                    // print Strength
+                    Logger.i(TAG, "str: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 4) {
+                    // print Wisdom
+                    Logger.i(TAG, "wisdom: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 5) {
+                    // print Physical Resistance
+                    Logger.i(TAG, "phy def: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 6) {
+                    // print Magical Resistance
+                    Logger.i(TAG, "mag def: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 7) {
+                    // print Critical Percent
+                    Logger.i(TAG, "crit%: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
+                }
+            }
+        }
     }
 
     /**

@@ -14,39 +14,14 @@
  * limitations under the License.
  */
 
-package com.tatumgames.stattool.requests.model;
+package com.tatumgames.stattool.requests.app;
 
 import com.google.gson.annotations.SerializedName;
+import com.tatumgames.stattool.requests.model.GuardianDetails;
+import com.tatumgames.stattool.volley.BaseEntityRQ;
 
-public class Skins {
+public class UpdateGuardianRQ extends BaseEntityRQ {
 
-    @SerializedName("id")
-    public String id;
-
-    @SerializedName("characterId")
-    public String characterId;
-
-    @SerializedName("description")
-    public String description;
-
-    @SerializedName("name")
-    public String name;
-
-    @SerializedName("url")
-    public String url;
-
-    @SerializedName("created")
-    public String created;
-
-    @SerializedName("updated")
-    public String updated;
-
-    @SerializedName("active")
-    public String active;
-
-    @SerializedName("archived")
-    public String archived;
-
-    @SerializedName("deleted")
-    public String deleted;
+    @SerializedName("guardianDetails")
+    public GuardianDetails data = new GuardianDetails();
 }

@@ -14,32 +14,36 @@
  * limitations under the License.
  */
 
-package com.tatumgames.stattool.requests.model;
+package com.tatumgames.stattool.requests.app;
 
 import com.google.gson.annotations.SerializedName;
+import com.tatumgames.stattool.volley.BaseEntityRQ;
 
-public class Skins {
+public class UpdateAreaLevelRQ extends BaseEntityRQ {
 
     @SerializedName("id")
     public String id;
 
-    @SerializedName("characterId")
-    public String characterId;
+    @SerializedName("name")
+    public String name;
 
     @SerializedName("description")
     public String description;
 
-    @SerializedName("name")
-    public String name;
+    @SerializedName("code")
+    public String code;
 
-    @SerializedName("url")
-    public String url;
+    @SerializedName("levelNo")
+    public String levelNo;
 
-    @SerializedName("created")
-    public String created;
+    @SerializedName("areaId")
+    public String areaId;
 
-    @SerializedName("updated")
-    public String updated;
+    @SerializedName("rewardId")
+    public String rewardId;
+
+    @SerializedName("rewardQty")
+    public String rewardQty;
 
     @SerializedName("active")
     public String active;
@@ -49,4 +53,5 @@ public class Skins {
 
     @SerializedName("deleted")
     public String deleted;
+
 }

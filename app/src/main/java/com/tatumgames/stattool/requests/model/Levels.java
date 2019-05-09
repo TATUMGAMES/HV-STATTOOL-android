@@ -18,22 +18,39 @@ package com.tatumgames.stattool.requests.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Skins {
+import java.util.ArrayList;
+
+public class Levels {
 
     @SerializedName("id")
     public String id;
 
-    @SerializedName("characterId")
-    public String characterId;
+    @SerializedName("name")
+    public String name;
 
     @SerializedName("description")
     public String description;
 
-    @SerializedName("name")
-    public String name;
+    @SerializedName("code")
+    public String code;
 
-    @SerializedName("url")
-    public String url;
+    @SerializedName("levelNo")
+    public String levelNo;
+
+    @SerializedName("areaId")
+    public String areaId;
+
+    @SerializedName("areaName")
+    public String areaName;
+
+    @SerializedName("rewardId")
+    public String rewardId;
+
+    @SerializedName("rewardName")
+    public String rewardName;
+
+    @SerializedName("rewardQty")
+    public String rewardQty;
 
     @SerializedName("created")
     public String created;
@@ -49,4 +66,8 @@ public class Skins {
 
     @SerializedName("deleted")
     public String deleted;
+
+    @SerializedName("opponents")
+    public ArrayList<Opponents> opponents = new ArrayList<>();
+
 }

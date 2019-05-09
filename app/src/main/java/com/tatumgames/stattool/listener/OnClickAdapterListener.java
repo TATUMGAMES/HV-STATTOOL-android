@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package com.tatumgames.stattool.requests.app;
+package com.tatumgames.stattool.listener;
 
-import com.google.gson.annotations.SerializedName;
-import com.tatumgames.stattool.requests.model.GuardianDetails;
-import com.tatumgames.stattool.volley.BaseEntityRS;
+public interface OnClickAdapterListener {
 
-import java.util.ArrayList;
-
-public class GetGuardiansRS extends BaseEntityRS {
-
-    @SerializedName("data")
-    public ArrayList<GuardianDetails> data = new ArrayList<>();
+    void onClick(int pos);
 }

@@ -14,39 +14,16 @@
  * limitations under the License.
  */
 
-package com.tatumgames.stattool.requests.model;
+package com.tatumgames.stattool.requests.app;
 
 import com.google.gson.annotations.SerializedName;
+import com.tatumgames.stattool.requests.model.MissionDetails;
+import com.tatumgames.stattool.volley.BaseEntityRS;
 
-public class Skins {
+import java.util.ArrayList;
 
-    @SerializedName("id")
-    public String id;
+public class GetMissionsRS extends BaseEntityRS {
 
-    @SerializedName("characterId")
-    public String characterId;
-
-    @SerializedName("description")
-    public String description;
-
-    @SerializedName("name")
-    public String name;
-
-    @SerializedName("url")
-    public String url;
-
-    @SerializedName("created")
-    public String created;
-
-    @SerializedName("updated")
-    public String updated;
-
-    @SerializedName("active")
-    public String active;
-
-    @SerializedName("archived")
-    public String archived;
-
-    @SerializedName("deleted")
-    public String deleted;
+    @SerializedName("data")
+    public ArrayList<MissionDetails> missionDetails = new ArrayList<>();
 }

@@ -18,7 +18,7 @@ package com.tatumgames.stattool.requests.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Skins {
+public class Images {
 
     @SerializedName("id")
     public String id;

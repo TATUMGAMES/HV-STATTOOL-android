@@ -46,10 +46,10 @@ public class InputFilterMinMax implements InputFilter {
 
     /**
      * Method is used to check if a value is between a min, max range
-     * @param a min
-     * @param b max
-     * @param c value
-     * @return
+     * @param a min value
+     * @param b max value
+     * @param c value to be determined
+     * @return True if value is between min and max values, otherwise false
      */
     private boolean isInRange(int a, int b, int c) {
         return b > a ? c >= a && c <= b : c >= b && c <= a;

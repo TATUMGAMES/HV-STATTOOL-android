@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="arryCardType">
+    <array name="arry_card_type">
         <!-- card types -->
         <item>SELECT OPTION</item>
         <item>COMMON</item>
@@ -10,7 +10,8 @@
         <item>MYTHIC</item>
         <item>SQUAD LEADER</item>
     </array>
-    <array name="arryAffinity">
+
+    <array name="arry_affinity">
         <!-- affinity types -->
         <item>SELECT OPTION</item>
         <item>ROBOTIC</item>
@@ -20,4 +21,15 @@
         <item>PSYCHIC</item>
         <item>BRAINIAC</item>
     </array>
+
+    <array name="array_apis">
+        <!-- apis -->
+        <item>Update Affinity and Card Type</item>
+        <item>Update Base Stats</item>
+        <item>Update Mission Difficulty</item>
+        <item>Update Mission Areas</item>
+        <item>Update Mission Levels</item>
+        <item>Update Mission Opponents</item>
+    </array>
+
 </resources>    

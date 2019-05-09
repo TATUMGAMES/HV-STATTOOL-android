@@ -16,7 +16,6 @@
 
 package com.tatumgames.stattool.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
@@ -26,7 +25,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -46,40 +44,28 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.tatumgames.stattool.BuildConfig;
 import com.tatumgames.stattool.R;
-import com.tatumgames.stattool.enums.Enum;
+import com.tatumgames.stattool.fragments.ApiFragment;
 import com.tatumgames.stattool.helper.InputFilterMinMax;
 import com.tatumgames.stattool.listener.ShakeEventListener;
 import com.tatumgames.stattool.logger.Logger;
-import com.tatumgames.stattool.model.GuardianStats;
-import com.tatumgames.stattool.requests.app.GetGuardiansRQ;
-import com.tatumgames.stattool.requests.app.GetGuardiansRS;
-import com.tatumgames.stattool.requests.app.UpdateGuardianBaseStatsBulkRQ;
-import com.tatumgames.stattool.requests.app.UpdateGuardianBaseStatsBulkRS;
-import com.tatumgames.stattool.requests.model.Data;
-import com.tatumgames.stattool.requests.model.UpdateBaseStats;
+import com.tatumgames.stattool.model.GuardianStatsModel;
+import com.tatumgames.stattool.model.MappingModel;
 import com.tatumgames.stattool.utils.DialogUtils;
-import com.tatumgames.stattool.utils.ErrorUtils;
 import com.tatumgames.stattool.utils.StatUtils;
 import com.tatumgames.stattool.utils.Utils;
 import com.tatumgames.stattool.utils.network.NetworkReceiver;
-import com.tatumgames.stattool.volley.RequestManager;
-import com.tatumgames.stattool.volley.constants.UrlConstants;
-import com.tatumgames.stattool.volley.listeners.ErrorListener;
-import com.tatumgames.stattool.volley.listeners.GsonObjectListener;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener,
-        NetworkReceiver.NetworkStatusObserver {
+public class MainActivity extends BaseActivity implements View.OnClickListener,
+        AdapterView.OnItemSelectedListener, NetworkReceiver.NetworkStatusObserver {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int VIBRATE_TIMER = 500; // milliseconds
@@ -91,12 +77,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private static final String SELECT_OPTION = "SELECT OPTION";
     private static final String FORWARD_SLASH = "/ ";
 
-    private RequestManager mRequestManager;
     private NetworkReceiver mNetworkReceiver;
-    private ErrorUtils mErrorUtils;
     private Context mContext;
-    private GuardianStats stats;
-    private StatUtils statUtils;
+    private GuardianStatsModel mStats;
+    private StatUtils mStatUtils;
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
     private Vibrator v;
@@ -112,9 +96,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private String[] arryAffinity, arryType;
     private Timer mTimer;
     private Animation animation;
-    private ArrayList<UpdateGuardianBaseStatsBulkRQ> alUpdateGuardianBaseStatsBulkRQ;
 
-    private int updateGuardianCounter;
     private long mLastClickTime;
 
     @Override
@@ -141,13 +123,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      */
     private void initializeViews() {
         mContext = MainActivity.this;
-        stats = new GuardianStats();
-        statUtils = new StatUtils();
+        mStats = new GuardianStatsModel();
+        mStatUtils = new StatUtils();
         mTimer = new Timer();
-        mRequestManager = new RequestManager(this);
         mNetworkReceiver = new NetworkReceiver();
-        mErrorUtils = new ErrorUtils();
-        alUpdateGuardianBaseStatsBulkRQ = new ArrayList<>();
 
         // initialize vibrator and sensor for device shake detector
         v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -174,8 +153,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         tvResetToBase = findViewById(R.id.tv_reset_to_base);
         spnAffinity = findViewById(R.id.spn_affinity);
         spnType = findViewById(R.id.spn_card_type);
-        arryAffinity = getResources().getStringArray(R.array.arryAffinity);
-        arryType = getResources().getStringArray(R.array.arryCardType);
+        arryAffinity = getResources().getStringArray(R.array.arry_affinity);
+        arryType = getResources().getStringArray(R.array.arry_card_type);
         btnRegenerate = findViewById(R.id.btn_regenerate);
 
         // set visibility for update stats based on configuration
@@ -255,15 +234,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 if (Utils.isStringEmpty(String.valueOf(edtAsc.getText()))) {
                     edtAsc.setText("0");
                     // max level
-                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMavLv())));
                     // update edtText filter
                     edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, MAX_LEVEL_FILTER_VALUE)});
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
-                    if (currLv > stats.getMavLv()) {
+                    if (currLv > mStats.getMavLv()) {
                         // adjust max lv
-                        Logger.d(TAG, "adjusting maxLv: " + stats.getMavLv());
-                        edtLv.setText(String.valueOf(stats.getMavLv()));
+                        Logger.d(TAG, "adjusting maxLv: " + mStats.getMavLv());
+                        edtLv.setText(String.valueOf(mStats.getMavLv()));
                     }
                 }
                 return false;
@@ -288,15 +267,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 if (!Utils.isStringEmpty(String.valueOf(edtAsc.getText())) && isBaseStatsSet &&
                         Integer.parseInt(String.valueOf(edtAsc.getText())) > 0) {
                     // max level
-                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
+                    tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMavLv())));
                     // update edtText filter
-                    edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, stats.getMavLv())});
+                    edtLv.setFilters(new InputFilter[]{new InputFilterMinMax(0, mStats.getMavLv())});
 
                     int currLv = Integer.parseInt(String.valueOf(edtLv.getText()));
-                    if (currLv > stats.getMavLv()) {
+                    if (currLv > mStats.getMavLv()) {
                         // adjust max lv
-                        Logger.d(TAG, "adjusting maxLv: " + stats.getMavLv());
-                        edtLv.setText(String.valueOf(stats.getMavLv()));
+                        Logger.d(TAG, "adjusting maxLv: " + mStats.getMavLv());
+                        edtLv.setText(String.valueOf(mStats.getMavLv()));
                     }
                 }
             }
@@ -428,7 +407,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      */
     private void reset() {
         v.vibrate(VIBRATE_TIMER);
-        stats.reset(); // reset stats model class
+        mStats.reset(); // reset stats model class
         isBaseStatsSet = false; // reset flag tracker for stat reset
         // set editText action disabled
         isEditable = false;
@@ -476,19 +455,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 !mSelectedCardType.equalsIgnoreCase(SELECT_OPTION)) {
             edtLv.setText("1");
             edtAsc.setText("0");
-            tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
-            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
-            tvHp.setText(String.valueOf(stats.getHp()));
-            tvStr.setText(String.valueOf(stats.getStr()));
-            tvSpd.setText(String.valueOf(stats.getSpd()));
-            tvWis.setText(String.valueOf(stats.getWis()));
-            tvPhyDef.setText(String.valueOf(stats.getPhyDef()));
-            tvMagDef.setText(String.valueOf(stats.getMagDef()));
-            tvCrit.setText(String.valueOf(stats.getCrit()));
+            tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMavLv())));
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMaxAsc())));
+            tvHp.setText(String.valueOf(mStats.getHp()));
+            tvStr.setText(String.valueOf(mStats.getStr()));
+            tvSpd.setText(String.valueOf(mStats.getSpd()));
+            tvWis.setText(String.valueOf(mStats.getWis()));
+            tvPhyDef.setText(String.valueOf(mStats.getPhyDef()));
+            tvMagDef.setText(String.valueOf(mStats.getMagDef()));
+            tvCrit.setText(String.valueOf(mStats.getCrit()));
 
             // update Affinity selection
             for (int i = 0; i < arryAffinity.length; i++) {
-                if (String.valueOf(stats.getAffinity()).equals(arryAffinity[i])) {
+                if (String.valueOf(mStats.getAffinity()).equals(arryAffinity[i])) {
                     spnAffinity.setSelection(i);
                     break;
                 }
@@ -496,7 +475,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
             // update Type selection
             for (int i = 0; i < arryType.length; i++) {
-                if (String.valueOf(stats.getCardType()).equals(arryType[i])) {
+                if (String.valueOf(mStats.getCardType()).equals(arryType[i])) {
                     spnType.setSelection(i);
                     break;
                 }
@@ -549,8 +528,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 resetToBaseStats();
                 break;
             case R.id.ll_update_wrapper:
-                // getGuardians request
-                getGuardians();
+                // add fragment
+                addFragment(new ApiFragment());
                 break;
             default:
                 break;
@@ -622,9 +601,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
      * @param isEnabled True if ascension editText is editable, otherwise false
      */
     private void toggleEditTextAsc(boolean isEnabled) {
-        if (!Utils.checkIfNull(stats) && !Utils.checkIfNull(stats.getCardType()) &&
+        if (!Utils.checkIfNull(mStats) && !Utils.checkIfNull(mStats.getCardType()) &&
                 !mSelectedCardType.equalsIgnoreCase(arryType[0])) {
-            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
+            tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMaxAsc())));
         }
 
         if (isEnabled) {
@@ -673,21 +652,24 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
             if (!isBaseStatsSet) {
                 Logger.d(TAG, "setting base stats");
+
+
                 // generate stats and set textView
-                stats = statUtils.getStats(
-                        statUtils.getCardType(mSelectedCardType),
-                        statUtils.getAffinity(mSelectedAffinity),
+                // cardType and affinity are String values from selected spinner options
+                mStats = mStatUtils.getStats(
+                        MappingModel.getCardTypeByCardType(mSelectedCardType),
+                        MappingModel.getAffinityByAffinity(mSelectedAffinity),
                         Integer.parseInt(String.valueOf(edtAsc.getText())));
 
-                tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMavLv())));
-                tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
-                tvHp.setText(String.valueOf(stats.getHp()));
-                tvStr.setText(String.valueOf(stats.getStr()));
-                tvSpd.setText(String.valueOf(stats.getSpd()));
-                tvWis.setText(String.valueOf(stats.getWis()));
-                tvPhyDef.setText(String.valueOf(stats.getPhyDef()));
-                tvMagDef.setText(String.valueOf(stats.getMagDef()));
-                tvCrit.setText(String.valueOf(stats.getCrit()));
+                tvMaxLv.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMavLv())));
+                tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMaxAsc())));
+                tvHp.setText(String.valueOf(mStats.getHp()));
+                tvStr.setText(String.valueOf(mStats.getStr()));
+                tvSpd.setText(String.valueOf(mStats.getSpd()));
+                tvWis.setText(String.valueOf(mStats.getWis()));
+                tvPhyDef.setText(String.valueOf(mStats.getPhyDef()));
+                tvMagDef.setText(String.valueOf(mStats.getMagDef()));
+                tvCrit.setText(String.valueOf(mStats.getCrit()));
 
                 // base stats are now set
                 isBaseStatsSet = true;
@@ -705,34 +687,34 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                         double multiplierStats = (level - 1) * MULTIPLIER_LEVEL_STATS;
 
                         // update asc
-                        tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(stats.getMaxAsc())));
+                        tvMaxAsc.setText(FORWARD_SLASH.concat(String.valueOf(mStats.getMaxAsc())));
 
                         // update hp
-                        int hp = stats.getHp();
+                        int hp = mStats.getHp();
                         tvHp.setText(String.valueOf((int) (hp + (hp * multiplierStats))));
 
                         // update str
-                        int str = stats.getStr();
+                        int str = mStats.getStr();
                         tvStr.setText(String.valueOf((int) (str + (str * multiplierStats))));
 
                         // update spd
-                        int spd = stats.getSpd();
+                        int spd = mStats.getSpd();
                         tvSpd.setText(String.valueOf((int) (spd + (spd * multiplierStats))));
 
                         // update wis
-                        int wis = stats.getWis();
+                        int wis = mStats.getWis();
                         tvWis.setText(String.valueOf((int) (wis + (wis * multiplierStats))));
 
                         // update phyDef
-                        int phyDef = stats.getPhyDef();
+                        int phyDef = mStats.getPhyDef();
                         tvPhyDef.setText(String.valueOf((int) (phyDef + (phyDef * multiplierStats))));
 
                         // update magDef
-                        int magDef = stats.getMagDef();
+                        int magDef = mStats.getMagDef();
                         tvMagDef.setText(String.valueOf((int) (magDef + (magDef * multiplierStats))));
 
                         // update crit
-                        int crit = stats.getCrit();
+                        int crit = mStats.getCrit();
                         tvCrit.setText(String.valueOf((int) (crit + (crit * multiplierStats))));
 
                         // print stats to console
@@ -759,196 +741,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         Logger.i(TAG, "mag def: " + tvMagDef.getText());
         Logger.i(TAG, "crit%: " + tvCrit.getText());
         Logger.i(TAG, "---------------------------------------------");
-    }
-
-    /**
-     * Method is used to make getGuardians request
-     */
-    private void getGuardians() {
-        // show progress dialog
-        DialogUtils.showProgressDialog(mContext);
-
-        ErrorListener errorListener = new ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError googleError, int resultCode) {
-                // do nothing
-            }
-
-            @Override
-            public void onErrorResponse(@NonNull VolleyError volleyError) {
-                volleyError.printStackTrace();
-                // dismiss loading dialog
-                DialogUtils.dismissProgressDialog();
-                // display error dialog
-                mErrorUtils.showError(MainActivity.this, getResources().getString(R.string.default_error_message));
-            }
-        };
-        GsonObjectListener<GetGuardiansRS> listener = new GsonObjectListener<>(new GsonObjectListener.OnResponse<GetGuardiansRS>() {
-            @Override
-            public void onResponse(GetGuardiansRS response) {
-                if (!Utils.checkIfNull(response) && !Utils.checkIfNull(response.data)) {
-                    populateUpdateGuardianStatsList(response.data);
-                } else {
-                    // dismiss loading dialog
-                    DialogUtils.dismissProgressDialog();
-                }
-            }
-        }, errorListener, GetGuardiansRS.class);
-        mRequestManager.createGetRequest(new GetGuardiansRQ(), listener, errorListener,
-                UrlConstants.HV_GET_GUARDIANS_URL_CREATE);
-    }
-
-    /**
-     * Method is used to populate list of requests for updating Guardian stats
-     *
-     * @param data List of Guardian data
-     */
-    private void populateUpdateGuardianStatsList(ArrayList<Data> data) {
-
-        for (int i = 0; i < data.size(); i++) {
-            ArrayList<UpdateBaseStats> alUpdateBaseStats = new ArrayList<>();
-            // generate stats
-            GuardianStats guardianStats = statUtils.getStats(
-                    statUtils.getCardType(i < 6 ? "SQUAD_LEADER" : "COMMON"),
-                    statUtils.getAffinity("ROBOTIC"),
-                    0);
-
-            for (int n = 0; n < data.get(i).stats.size(); n++) {
-                // update stats with generated stats
-                UpdateBaseStats updateBaseStats = new UpdateBaseStats();
-                updateBaseStats.id = Integer.parseInt(data.get(i).stats.get(n).id);
-                updateBaseStats.statId = Integer.parseInt(data.get(i).stats.get(n).statId);
-                if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.HEALTH.toString())) {
-                    // represents HP
-                    updateBaseStats.statValue = guardianStats.getHp();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.SPEED.toString())) {
-                    // represents Speed
-                    updateBaseStats.statValue = guardianStats.getSpd();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.STRENGTH.toString())) {
-                    // represents Strength
-                    updateBaseStats.statValue = guardianStats.getStr();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.WISDOM.toString())) {
-                    // represents Wisdom
-                    updateBaseStats.statValue = guardianStats.getSpd();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.PHYSICAL_RESISTANCE.toString())) {
-                    // represents Physical Resistance
-                    updateBaseStats.statValue = guardianStats.getPhyDef();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.MAGICAL_RESISTANCE.toString())) {
-                    // represents Magical Resistance
-                    updateBaseStats.statValue = guardianStats.getMagDef();
-                } else if (data.get(i).stats.get(n).code.equalsIgnoreCase(Enum.Stats.CRITICAL_PERCENT.toString())) {
-                    // represents Critical Percent
-                    updateBaseStats.statValue = guardianStats.getCrit();
-                }
-                // 0 is false, 1 is true
-                updateBaseStats.active = 1;
-                updateBaseStats.archived = 0;
-                updateBaseStats.deleted = 0;
-                // add updated stat
-                alUpdateBaseStats.add(updateBaseStats);
-
-                if (n == (data.get(i).stats.size() - 1)) {
-                    // add formed request for updateBaseStats(bulk)
-                    UpdateGuardianBaseStatsBulkRQ updateGuardianBaseStatsBulkRQ = new UpdateGuardianBaseStatsBulkRQ();
-                    updateGuardianBaseStatsBulkRQ.guardianId = Integer.parseInt(data.get(i).id);
-                    updateGuardianBaseStatsBulkRQ.stats = alUpdateBaseStats;
-                    alUpdateGuardianBaseStatsBulkRQ.add(updateGuardianBaseStatsBulkRQ);
-                }
-            }
-        }
-
-        // print formed request for updateGuardianBaseStats
-        printUpdateGuardianBaseStatsRQ();
-
-        // make updateGuardianStats(bulk) request
-        updateGuardianStats();
-    }
-
-    /**
-     * Method is used to print out all the update Guardian base stat requests
-     */
-    private void printUpdateGuardianBaseStatsRQ() {
-        for (int i = 0; i < alUpdateGuardianBaseStatsBulkRQ.size(); i++) {
-            Logger.i(TAG, "---------------------------------------------");
-            // print GuardianId
-            Logger.i(TAG, "guardianId: " + alUpdateGuardianBaseStatsBulkRQ.get(i).guardianId);
-            for (int n = 0; n < alUpdateGuardianBaseStatsBulkRQ.get(i).stats.size(); n++) {
-                // print Id (primary key)
-                Logger.i(TAG, "id: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).id);
-                if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 1) {
-                    // print HP
-                    Logger.i(TAG, "hp: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 2) {
-                    // print Speed
-                    Logger.i(TAG, "spd: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 3) {
-                    // print Strength
-                    Logger.i(TAG, "str: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 4) {
-                    // print Wisdom
-                    Logger.i(TAG, "wisdom: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 5) {
-                    // print Physical Resistance
-                    Logger.i(TAG, "phy def: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 6) {
-                    // print Magical Resistance
-                    Logger.i(TAG, "mag def: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                } else if (alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statId == 7) {
-                    // print Critical Percent
-                    Logger.i(TAG, "crit%: " + alUpdateGuardianBaseStatsBulkRQ.get(i).stats.get(n).statValue);
-                }
-            }
-        }
-    }
-
-    /**
-     * Method is used to make updateGuardianStats(bulk) requests
-     */
-    private void updateGuardianStats() {
-        if (updateGuardianCounter == 0) {
-            // show progress dialog
-            DialogUtils.showProgressDialog(mContext);
-        }
-
-        ErrorListener errorListener = new ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError googleError, int resultCode) {
-                // do nothing
-            }
-
-            @Override
-            public void onErrorResponse(@NonNull VolleyError volleyError) {
-                volleyError.printStackTrace();
-                // dismiss loading dialog
-                DialogUtils.dismissProgressDialog();
-                // display error dialog
-                mErrorUtils.showError(MainActivity.this, getResources().getString(R.string.default_error_message));
-            }
-        };
-        GsonObjectListener<UpdateGuardianBaseStatsBulkRS> listener = new GsonObjectListener<>(new GsonObjectListener.OnResponse<UpdateGuardianBaseStatsBulkRS>() {
-            @Override
-            public void onResponse(UpdateGuardianBaseStatsBulkRS response) {
-                // increase counter
-                updateGuardianCounter++;
-
-                if (updateGuardianCounter < alUpdateGuardianBaseStatsBulkRQ.size()) {
-                    // recursively call updateGuardianStats() with short delay
-                    updateGuardianStats();
-                } else {
-                    // reset
-                    updateGuardianCounter = 0;
-                    alUpdateGuardianBaseStatsBulkRQ.clear();
-                    // dismiss loading dialog
-                    DialogUtils.dismissProgressDialog();
-                    // successful TCoin purchase
-                    DialogUtils.showDefaultOKAlert(MainActivity.this, getResources().getString(R.string.successful_update_stats_title),
-                            getResources().getString(R.string.successful_update_stats_message));
-                }
-            }
-        }, errorListener, UpdateGuardianBaseStatsBulkRS.class);
-        mRequestManager.createPostRequest(alUpdateGuardianBaseStatsBulkRQ.get(updateGuardianCounter),
-                listener, errorListener, UrlConstants.HV_UPDATE_BASE_STATS_BULK_URL_CREATE);
-
     }
 
     @Override

@@ -40,6 +40,97 @@
     <string name="tooltip_stats_regenerate">IMPORTANT: Current stats are outdated! Stats do not regenerate
         automatically. Press the regenerate button to update stats</string>
 
+    <!-- Guardian descriptions -->
+    <string name="frost_fire_desc">Burst is a lone wolf and mysterious. With no real name, enemies often call
+        her \"Frost Fire\" because her energy weapons spit out blue fire! It is no secret that Burst
+        spends her nights roaming the streets looking for bad guys, but what she does with the rest
+        of her time is unknown.</string>
+    <string name="scourge_desc">Yu Gang can create boiling hot black oil residue, that secretes from his bones.
+        He can toss this oil to burn, blind and even immobilize his opponents in a sticky goo that makes it
+        nearly impossible to remove.</string>
+    <string name="silent_storm">Jarvis Jones is very disciplined and despite having killed hundreds of people his moral
+        compass is unfaltering. His intentions are good, they have always been. Even after an assassination.</string>
+    <string name="aziza_desc">Sabina has the ability to see future events. Her visions are never fluid, they are patchy
+        and generally unclear. She can trigger a vision if needed, but they mostly come randomly and uncontrollably.
+        She also has the power to briefly control time, however, this is an ability she has yet to master.</string>
+    <string name="binary_desc">Jerik Johnson spends most of his time staring at the computer screen in a zombie-like trance.
+        He is passive-aggressive, he rarely gets into physical confrontations. But while in front of his computer,
+        he can destroy your life or even erase your entire existence with a couple keystrokes.</string>
+    <string name="cougar_desc">Very spiritual and down-to-earth. He is humble but fierce in his attack.
+        Earth, life and family are what he loves and values most. He will do all that is required to protect
+        everyone who dares to disturb what he stands for. His name translates as \“Cougar\” in English.</string>
+    <string name="brick_jaw_desc">As one contemporaneous high-school peer observed, \"Brickjaw has a terrible identity
+        problem, a marked inferiority complex and is only comfortable when making others uncomfortable.\" Brickjaw is
+        dangerous not because he enjoys fighting, but because he both enjoys it and is very skilled at it.</string>
+    <string name="hair_witch_desc">Tera Harkenson has complete control over her hair, allowing her to freely alter,
+        grow, change texture, color, shape and manipulate as if it was an appendage. She can weave her hair into
+        different shapes, however, she generally uses her hair as additional knife wielding limbs.</string>
+    <string name="genesis_desc">Michael is stronger than the average human, but he does not have god-like powers.
+        He uses his intelligence, and the initial horror that people have when they witness him to his advantage.
+        He knows that he is not immune to death and this thought frightens him to his core.</string>
+    <string name="s7_desc">Samuel is super strong and can withstand a tank\'s blast against him. Although his skin is
+        as strong as titanium, he lacks combat abilities and knowledge.</string>
+    <string name="pain_desc">Pain doesn\'t have powers or abilities, but he is very skilled in hand-to-hand combat
+        and has an expertise in weaponry. He usually uses a sniper rifle, and mini-gun as a weapon. He wears a combat
+        suit that hides his face.</string>
+    <string name="massacre_desc">Once a kind, gentle and proud woman, Massacre is now filled with blood rage!
+        She is pure evil now, and causes destruction wherever she is. While the innocent cower at the sight of her
+        menace, an alien being named Nervo has taken a special interest in her.</string>
+    <string name="nervo_desc">Nervo is a calm, collected individual who perseveres in patience. He\’d rather
+        get to know his target, weaken them and strike when they are most vulnerable. It is an attribute he
+        developed from fighting countless species on Helo.</string>
+    <string name="dark_preistess_desc">Nysida is tired of those who only see the people of M\'ktor as a small group of
+        weak people who only have healing abilities. She has vowed to increase her own power at any cost to prove to the
+        world that M\'ktor is a place to be feared. Nysida will destroy all who get in her way of growing stronger
+        and does not care who dies in the process.</string>
+    <string name="tormented_king_desc">Elriush, once known for kindness, has truly become to epitomize the archetype of
+        a Mad King. He transitioned into power with only glory in mind and is now only a shadow of his former self.
+        Elriush is not fit to rule his people. He still holds the title of King of M\'ktor but he wanders their homeland
+        in a ghastly fashion with little to no emotion.</string>
+    <string name="exiled_priestess_desc">Lydae is hurt that her forested homeland of M\'ktor has been consumed by swampland,
+        darkness and greed. She does not blame her father for her exile, but is instead saddened by how far he has fallen
+        and how he has lost the light that their people once fought for. Fueled by nothing but misplaced love for her
+        father and sister, Lydae strives to be like her mother and bring light back into the darkness.</string>
+    <string name="psychick_desc">Evelyn Cherry loves to mess with other students during her free time, it amuses her.
+        She loves to draw, and hang out with her friends. She generally remains optimistic, but does have a mean side to
+        her that only surfaces under dire circumstances.</string>
+    <string name="amusing_sinner_desc">Jackel\'s only gift is the gift of laughter. He is a master manipulator
+        and can get anyone to do his bidding. However, the times when he does get his hands dirty the
+        results are always gut wrenchingly disgusting!</string>
+    <string name="brainz_desc">Alan is calm, and is a bit courageous. He is very smart, and due to being able
+        to understand the world around him, he has always understood how his abilities work. But how Alan got
+        his abilities remains unknown.</string>
+    <string name="slade_desc">Slade does not speak much, but when he does it is straight to the point
+        and meaningful. He cares mostly about nature and it\'s balance. He can sense when there is an
+        imbalance between human consumption and destruction and the replenishing of nature in the world.</string>
+    <string name="general_of_grins_desc">With his madness and disfigurements, BoBo relies on the troupes of Klown Krew
+        members who spend their downtime either in padded cells or mockingly luring victims into the
+        shadows where BoBo lurks. Simply, he is pure evil.</string>
+    <string name="beast_girl">Ashley Blue is serious throughout life, and has no sense of humor. When she is turns
+        into the Beast, she is unable to speak any words and can rarely control herself until she tires. As a human,
+        she is a little girl who is scared all the time.</string>
+    <string name="burn_streak_desc">Once Lina sets a goal, she obsessively works towards that goal. But this also
+        works against her. When she is unable to obtain what she wants, she becomes blind with rage!</string>
+    <string name="dragon_flame_desc">Huo Tian is subservient and loyal to whomever he is following, regardless of
+        right or wrong. At times he can be temperamental and arrogant, but mostly he is quiet and always ready to
+        set something (or someone) ablaze.</string>
+    <string name="madam_frost_desc">Madam Frost loves ice and hates fire, although she can\'t fly, she can ski on ice
+        to travel to where ever she needs to go. She is unable to find love due to her ability to freeze
+        anything she touches. She sometimes sobs randomly hoping to fall in love. She has a sense of humor
+        and loves to toy with her enemy.</string>
+    <string name="hot_head_desc">He doesn\’t wear any special suit he just tries to wear what the kids wear that
+        is popular in school. He tries to look as normal as he can. He can produce and control fire, manipulating
+        it into various weapons, but his favorite is the sword. He also learned to create basketball sized
+        fireballs that he can throw around with incredible precision and speed.</string>
+    <string name="protector_desc">Protector remains modest and believes he is guided by God. He feels
+        passionate about fighting evil and protecting the innocent, but he also knows that he isn\'t perfect.
+        He just does his best to make a difference in his own special way.</string>
+
+    <!-- Guardian descriptions -->
+    <string name="alpha">Alpha</string>
+    <string name="beta">Beta</string>
+    <string name="omega">Omega</string>
+
     <!-- dialog options -->
     <string name="retry">Retry</string>
     <string name="ok">OK</string>
@@ -49,9 +140,14 @@
     <string name="confirm_logout">Are you sure you want to logout?</string>
     <string name="check_network">Sorry for the delay. We\'re having trouble connecting.
         Check your internet connection and we\'ll have you traveling shortly</string>
-    <string name="successful_update_stats_title">Successful Update Stats (Bulk)</string>
+    <string name="successful_update_stats_title">Successfully Updated Stats (Bulk)</string>
     <string name="successful_update_stats_message">Base stats for all Guardians have successfully been updated.
         Make getGuardiansRQ to confirm the latest changes.</string>
+    <string name="successful_update_guardian_title">Successfully Updated Guardians</string>
+    <string name="successful_update_guardian_message">Affinity, card type and descriptions for Guardians have
+        successfully been updated. Make getGuardiansRQ to confirm the latest changes.</string>
+    <string name="successful_update_mission_title">Successfully Updated Mission Difficulty</string>
+    <string name="successful_update_mission_message">Mission difficulty levels have successfully been updated.</string>
 
     <!-- error messages -->
     <string name="default_error_message">Sorry, we\'re having trouble connecting to our servers.

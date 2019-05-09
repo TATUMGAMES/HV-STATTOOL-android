@@ -18,28 +18,13 @@ package com.tatumgames.stattool.requests.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Skins {
+public class Attacks {
 
     @SerializedName("id")
     public String id;
 
-    @SerializedName("characterId")
-    public String characterId;
-
-    @SerializedName("description")
-    public String description;
-
-    @SerializedName("name")
-    public String name;
-
-    @SerializedName("url")
-    public String url;
-
-    @SerializedName("created")
-    public String created;
-
-    @SerializedName("updated")
-    public String updated;
+    @SerializedName("attackId")
+    public String attackId;
 
     @SerializedName("active")
     public String active;

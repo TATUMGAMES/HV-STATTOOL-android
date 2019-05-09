@@ -1,9 +1,25 @@
+/**
+ * Copyright 2013-present Tatum Games, LLC.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.tatumgames.stattool.utils;
 
 import android.support.annotation.NonNull;
 
 import com.tatumgames.stattool.enums.Enum;
-import com.tatumgames.stattool.model.GuardianStats;
+import com.tatumgames.stattool.model.GuardianStatsModel;
 
 import java.util.Random;
 
@@ -19,15 +35,15 @@ public class StatUtils {
      * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
      *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
      * @param asc      Ascension value
-     * @return GuardianStats object with generated base stats
+     * @return GuardianStatsModel object with generated base stats
      */
-    public GuardianStats getStats(@NonNull Enum.CardType cardType, @NonNull Enum.Affinity affinity, int asc) {
+    public GuardianStatsModel getStats(@NonNull Enum.CardType cardType, @NonNull Enum.Affinity affinity, int asc) {
         // initialize
         mCardType = cardType;
         mAffinity = affinity;
 
         // populate stat object
-        GuardianStats stats = new GuardianStats();
+        GuardianStatsModel stats = new GuardianStatsModel();
         stats.setMaxLv(getMaxLv(asc));
         stats.setMaxAsc(getMaxAsc());
         stats.setHp(randHpStatBase());
@@ -40,49 +56,6 @@ public class StatUtils {
         stats.setCardType(cardType);
         stats.setAffinity(affinity);
         return stats;
-    }
-
-    /**
-     * Helper method to convert String affinity to Affinity object
-     *
-     * @param affinity Each Guardian has strengths and weaknesses based on their affinity e.g.
-     *                 Robotic, Physical, Beast, Elemental, Psychic, Brainiac
-     * @return Object containing Affinity information
-     */
-    public Enum.Affinity getAffinity(String affinity) {
-        if (affinity.equalsIgnoreCase(String.valueOf(Enum.Affinity.ROBOTIC))) {
-            return Enum.Affinity.ROBOTIC;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Enum.Affinity.PHYSICAL))) {
-            return Enum.Affinity.PHYSICAL;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Enum.Affinity.BEAST))) {
-            return Enum.Affinity.BEAST;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Enum.Affinity.ELEMENTAL))) {
-            return Enum.Affinity.ELEMENTAL;
-        } else if (affinity.equalsIgnoreCase(String.valueOf(Enum.Affinity.PSYCHIC))) {
-            return Enum.Affinity.PSYCHIC;
-        }
-        return Enum.Affinity.BRAINIAC;
-    }
-
-    /**
-     * Helper method to convert String cardType to CardType object
-     *
-     * @param cardType This represents the strength and rarity of the card or Guardian
-     * @return Object containing cardType information
-     */
-    public Enum.CardType getCardType(String cardType) {
-        if (cardType.equalsIgnoreCase(String.valueOf(Enum.CardType.COMMON))) {
-            return Enum.CardType.COMMON;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(Enum.CardType.RARE))) {
-            return Enum.CardType.RARE;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(Enum.CardType.EPIC))) {
-            return Enum.CardType.EPIC;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(Enum.CardType.LEGENDARY))) {
-            return Enum.CardType.LEGENDARY;
-        } else if (cardType.equalsIgnoreCase(String.valueOf(Enum.CardType.MYTHIC))) {
-            return Enum.CardType.MYTHIC;
-        }
-        return Enum.CardType.SQUAD_LEADER;
     }
 
     /**

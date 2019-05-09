@@ -22,7 +22,7 @@ import com.tatumgames.stattool.enums.Enum;
  * Model class for Guardian statistics
  * Created by Tatum on 7/22/2015.
  */
-public class GuardianStats {
+public class GuardianStatsModel {
 
     private Enum.Affinity mAffinity;
     private Enum.CardType mCardType;

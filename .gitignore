@@ -1,9 +1,47 @@
-*.iml
-.gradle
+# gitignore - Leonard Tatum
+###########################
+
+# built application files
+*.apk
+*.ap_
+.externalNativeBuild
+.DS_Store
+
+# files for the dex VM
+*.dex
+
+# idea files
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+
+# general folders
+bin/
+gen/
+
+# Gradle files
+.gradle/
+/build/
+/*/build/
+*.gradle
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
 .DS_Store
-/build
+**/.DS_Store
 /captures
-.externalNativeBuild
+
+# Properties
+.apt_generated/
+project.properties
+version.properties
+*/version.properties
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+**.log

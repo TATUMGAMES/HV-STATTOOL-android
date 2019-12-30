@@ -4,12 +4,16 @@
 # built application files
 *.apk
 *.ap_
+.externalNativeBuild
+.DS_Store
 
 # files for the dex VM
 *.dex
 
-# Java class files
-*.class
+# idea files
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
 
 # general folders
 bin/
@@ -17,7 +21,7 @@ gen/
 
 # Gradle files
 .gradle/
-build/
+/build/
 /*/build/
 *.gradle
 
@@ -27,12 +31,7 @@ Thumbs.db
 # OSX files
 .DS_Store
 **/.DS_Store
-
-# Android Studio
-zTrip.iml
-*/zTrip.iml
-.idea/
-*.iml
+/captures
 
 # Properties
 .apt_generated/

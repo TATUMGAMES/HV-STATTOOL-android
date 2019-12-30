@@ -33,6 +33,10 @@ Thumbs.db
 **/.DS_Store
 /captures
 
+# Android Studio
+.idea/
+*.iml
+
 # Properties
 .apt_generated/
 project.properties

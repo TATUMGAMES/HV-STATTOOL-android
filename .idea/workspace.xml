@@ -17,67 +17,83 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cde4b3eb-23d1-4bbb-80f6-9291c4e9c5d1" name="Default" comment="added print method for all generated stats and minor updates">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/adapter/ApiAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/BaseFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/OnClickAdapterListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/MappingModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Attacks.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Images.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Levels.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/MissionDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Opponents.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/ui_slide_in_from_bottom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/ui_slide_in_from_top.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/ui_slide_out_to_bottom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/ui_slide_out_to_top.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_apis.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_apis.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/adapter/ApiAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/BaseFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/ShakeEventListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/MappingModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRS.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/ErrorListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/GsonObjectListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStatsModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/GuardianDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/slide_in_left.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/slide_out_left.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/array.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/array.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/tatumgames/stattool/ApplicationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/adapter/ApiAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/BaseFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/OnClickAdapterListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/OnClickAdapterListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/ShakeEventListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/logger/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/logger/Logger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStatsModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStatsModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/MappingModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRS.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Attacks.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Attacks.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/GuardianDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/GuardianDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Levels.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Levels.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/MissionDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/MissionDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Opponents.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Opponents.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Images.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/ErrorListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/GsonObjectListener.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
@@ -92,6 +108,10 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="ce0717177cdd983a017e" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -118,7 +138,26 @@
     <favorites_list name="STATTOOL-android" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="14" lean-forward="true" selection-end-line="46" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="46" column="6" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -184,10 +223,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_apis.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Data.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/array.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGaurdianRQ.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateGuardianDetails.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Missions.java" />
@@ -228,20 +263,25 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestQueue.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestQueue.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/GsonObjectListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/ErrorListener.java" />
+        <option value="$PROJECT_DIR$/app/.gitignore" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1014" />
-    <option name="width" value="910" />
-    <option name="height" value="1042" />
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -255,204 +295,32 @@
         <subPane>
           <expand>
             <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="HV-STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HV-STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="HV-STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HV-STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="HV-STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HV-STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="keystore" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="HV-STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HV-STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="activity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="adapter" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="enums" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="fragments" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="helper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="listener" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="logger" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="requests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="requests" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="requests" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="volley" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="STATTOOL-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="STATTOOL-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stattool" type="462c0819:PsiDirectoryNode" />
-              <item name="volley" type="462c0819:PsiDirectoryNode" />
-              <item name="constants" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -465,13 +333,14 @@
     <property name="ExportApk.Flavors" value="" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="ExportApk.SignV2" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/AndroidStudio/Workspace/STATTOOL-android/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java&#10;Mapping&#9;FILE&#9;file://C:/AndroidStudio/Workspace/STATTOOL-android/app/src/main/java/com/tatumgames/stattool/model/MappingModel.java&#10;Url&#9;FILE&#9;file://C:/AndroidStudio/Workspace/STATTOOL-android/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java&#10;RequestMana&#9;FILE&#9;file://C:/AndroidStudio/Workspace/STATTOOL-android/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/app/build.gradle" />
     <property name="android.sdk.path" value="$PROJECT_DIR$/../../SDK" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1537700871239" />
     <property name="device.picker.selection" value="3756564b4a4e3098" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Book Workspace/androidprojects-book2-slidingdrawer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../PublishedBooks" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
@@ -503,15 +372,6 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-    </configuration>
     <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -703,6 +563,12 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
@@ -744,6 +610,7 @@
       </method>
     </configuration>
     <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <properties />
       <listeners />
@@ -860,7 +727,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.62457335" visible="true" weight="0.16577825" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.62457335" visible="true" weight="0.21588486" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Captures" order="3" sideWeight="0.37542662" side_tool="true" weight="0.22360845" />
@@ -870,7 +737,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Resources Explorer" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.30222222" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.30119178" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.40998837" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -882,9 +749,9 @@
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32915717" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Logcat" order="12" weight="0.38675958" />
-      <window_info anchor="bottom" id="Version Control" order="13" visible="true" weight="0.34" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="13" visible="true" weight="0.3434453" />
       <window_info anchor="bottom" id="Messages" order="14" weight="0.3351893" />
-      <window_info anchor="bottom" id="Build" order="15" weight="0.3122222" />
+      <window_info anchor="bottom" id="Build" order="15" weight="0.3066089" />
       <window_info anchor="right" id="Assistant" order="0" weight="0.32963374" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
@@ -927,31 +794,25 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.java</url>
-          <line>67</line>
-          <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt</url>
           <line>523</line>
           <properties />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt</url>
           <line>527</line>
           <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt</url>
           <line>530</line>
           <properties />
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt</url>
           <line>441</line>
           <properties />
           <option name="timeStamp" value="13" />
@@ -1024,65 +885,16 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateGuardianDetails.java" />
-    <entry file="jar://$PROJECT_DIR$/../../SDK/platforms/android-26/android.jar!/android/os/Handler.class">
+    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/tatumgames/stattool/ApplicationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#3993#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="119">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/GsonObjectListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="133" column="27" selection-start-line="133" selection-start-column="27" selection-end-line="133" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/adapter/ApiAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
+        <state relative-caret-position="102">
           <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
@@ -1091,7 +903,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/adapter/ApiAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/enums/Enum.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/ApiFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
           <caret line="522" column="46" selection-start-line="522" selection-start-column="46" selection-end-line="522" selection-end-column="46" />
@@ -1102,19 +935,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/BaseFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/fragments/BaseFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/helper/InputFilterMinMax.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
+        <state relative-caret-position="408">
           <caret line="51" column="75" selection-start-line="51" selection-start-column="75" selection-end-line="51" selection-end-column="75" />
           <folding>
             <element signature="e#0#608#0" expanded="true" />
@@ -1122,47 +955,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/OnClickAdapterListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/OnClickAdapterListener.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="306">
+          <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/ShakeEventListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/listener/ShakeEventListener.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="204">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
             <element signature="e#0#608#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/logger/Logger.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/logger/Logger.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="204">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStatsModel.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/GuardianStatsModel.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
+        <state relative-caret-position="578">
           <caret line="86" column="19" selection-start-line="86" selection-start-column="19" selection-end-line="86" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/MappingModel.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/model/MappingModel.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1170,51 +1003,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRQ.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="340">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetGuardiansRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="340">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRQ.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRQ.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="340">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/GetMissionsRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRQ.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="408">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1222,40 +1044,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRQ.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRQ.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1263,10 +1055,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateAreaLevelRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="340">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRQ.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianBaseStatsBulkRS.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRQ.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1274,10 +1096,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRQ.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRQ.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1285,10 +1107,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateGuardianRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="374">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1296,40 +1118,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Attacks.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/app/UpdateMissionRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/GuardianDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Images.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Levels.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="374">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1337,20 +1129,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/MissionDetails.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Attacks.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="221">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Opponents.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/GuardianDetails.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Images.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Levels.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1358,173 +1170,225 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/MissionDetails.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Opponents.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Skins.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/Stats.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/requests/model/UpdateBaseStats.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkReceiver.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/network/NetworkUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/DialogUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/ErrorUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/StatUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/utils/Utils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="204">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/activity/BaseActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="96">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="27" column="7" lean-forward="true" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="323">
+          <caret line="100" column="26" lean-forward="true" selection-start-line="100" selection-start-column="26" selection-end-line="101" selection-end-column="56" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="379">
+          <caret line="144" column="13" selection-end-line="167" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+            <element signature="e#6642#6643#0" expanded="true" />
+            <element signature="e#6681#6682#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseRequest.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/CustomJsonObjectRequest.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRS.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="323">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/LruBitmapCache.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/BaseEntityRQ.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+        <state relative-caret-position="323">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#0#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestQueue.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/GsonObjectListener.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/listeners/ErrorListener.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="63" selection-start-line="5" selection-start-column="63" selection-end-line="5" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/constants/UrlConstants.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#617#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="25" column="20" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
+          <caret line="21" column="14" lean-forward="true" selection-end-line="46" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tatumgames/stattool/volley/RequestManager.java">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1242">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#617#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="544">
+          <caret line="46" column="6" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
         </state>
       </provider>
     </entry>
